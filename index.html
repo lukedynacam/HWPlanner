@@ -1,204 +1,198 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HWPlanner | Motorsport and Marine Wiring Planning</title>
-    <meta
-      name="description"
-      content="HWPlanner brings Horizon-inspired clarity, precision, and project control to motorsport and marine wiring work."
-    >
-    <link rel="preconnect" href="https://horizon-wiring.co.uk">
+    <title>HWPlanner | Weekly Production Planner</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <header class="site-header" aria-label="Main navigation">
-      <a class="brand" href="#top" aria-label="HWPlanner home">
-        <img
-          class="brand-logo brand-logo-white"
-          src="https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/images/Logo-White.ef0dd9d122b5d81fa8b78d5b9a4e5ef3.svg"
-          alt="Horizon Wiring"
-        >
-        <span class="brand-tag">Planner</span>
-      </a>
-
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#why">Why Choose Us</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
-
-    <main id="top">
-      <section class="hero">
-        <div class="hero-overlay">
-          <p class="eyebrow">Motorsport and marine wiring planning</p>
-          <h1>Precision planning for complex wiring projects.</h1>
-          <p class="hero-copy">
-            HWPlanner gives technical teams a clean, focused workspace for
-            planning harnesses, tracking work, and keeping quality visible from
-            first brief to final test.
+    <main>
+      <section id="login-view" class="login-shell" aria-labelledby="login-title">
+        <div class="login-card">
+          <p class="eyebrow">HWPlanner</p>
+          <h1 id="login-title">Production planning, one week at a time.</h1>
+          <p class="muted">
+            Sign in to manage weekly project demand, staff capacity, and competence-based allocations.
           </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#services">Explore Services</a>
-            <a class="button button-ghost" href="#contact">Start a Project</a>
+
+          <form id="login-form" class="stacked-form">
+            <label>
+              Email
+              <input id="login-email" name="email" type="email" autocomplete="email" value="planner@example.com" required>
+            </label>
+            <label>
+              Password
+              <input id="login-password" name="password" type="password" autocomplete="current-password" value="planner123" required>
+            </label>
+            <button type="submit" class="button primary">Log in</button>
+            <p id="login-error" class="form-error" role="alert" hidden></p>
+          </form>
+
+          <div class="demo-note">
+            Demo login: <strong>planner@example.com</strong> / <strong>planner123</strong>
           </div>
         </div>
       </section>
 
-      <section class="brand-strip" aria-label="Horizon Wiring brand values">
-        <div>
-          <strong>40+ years</strong>
-          <span>Collective F1 and marine wiring experience</span>
-        </div>
-        <div>
-          <strong>Custom looms</strong>
-          <span>Bespoke harness planning and project control</span>
-        </div>
-        <div>
-          <strong>Quality first</strong>
-          <span>Inspection, testing, and handover visibility</span>
-        </div>
-      </section>
+      <section id="app-view" class="app-shell" hidden>
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Production Planner</p>
+            <h1>Weekly planning dashboard</h1>
+          </div>
+          <div class="header-actions">
+            <label class="week-picker">
+              Planning week
+              <input id="planning-week" type="week">
+            </label>
+            <button id="logout-button" type="button" class="button ghost">Log out</button>
+          </div>
+        </header>
 
-      <section class="split-section" id="about">
-        <div class="split-copy">
-          <p class="eyebrow">About</p>
-          <h2>Built for specialist teams working to exacting standards.</h2>
-          <p>
-            Inspired by Horizon Wiring's motorsport and marine focus, HWPlanner
-            uses a stripped-back interface, structured project stages, and
-            quality-first workflows to help every loom, drawing, and test step
-            stay under control.
-          </p>
-          <a class="text-link" href="#why">Find Out More</a>
-        </div>
-        <div class="image-panel">
-          <img
-            src="https://horizon-wiring.co.uk/wp-content/uploads/IMG_1537.65258da941bb2.jpg"
-            alt="Detailed wiring harness workbench"
-          >
-        </div>
-      </section>
-
-      <section class="image-break" aria-label="Workshop wiring detail"></section>
-
-      <section class="split-section split-section-reverse" id="services">
-        <div class="split-copy">
-          <p class="eyebrow">Services</p>
-          <h2>Project visibility from design intent to tested assembly.</h2>
-          <p>
-            Plan custom harness assemblies, manage revisions, allocate workshop
-            tasks, record inspection checkpoints, and surface the information
-            race teams, marine builders, and technical managers need to move
-            confidently.
-          </p>
-          <a class="text-link" href="#contact">Find Out More</a>
-        </div>
-        <div class="image-panel image-panel-offset">
-          <img
-            src="https://horizon-wiring.co.uk/wp-content/uploads/DSC_0980.65258d2835990.jpg"
-            alt="Precision electrical wiring and loom components"
-          >
-        </div>
-      </section>
-
-      <section class="why-section" id="why">
-        <div class="section-intro">
-          <p class="eyebrow">Why Choose HWPlanner</p>
-          <h2>Designed around the same values as high-performance wiring.</h2>
-          <p>
-            Clear information architecture, disciplined quality gates, and
-            responsive support keep complex electrical projects moving.
-          </p>
-        </div>
-
-        <div class="value-grid">
-          <article class="value-card">
-            <img
-              src="https://horizon-wiring.co.uk/wp-content/uploads/Experience.64e4cafb54179.svg"
-              alt=""
-              aria-hidden="true"
-            >
-            <h3>Experience</h3>
-            <p>
-              Workflows reflect real-world wiring projects, from complex
-              drawings through to production and installation support.
-            </p>
+        <section class="summary-grid" aria-label="Weekly summary">
+          <article class="summary-card">
+            <span>Total project hours</span>
+            <strong id="summary-demand">0h</strong>
           </article>
-
-          <article class="value-card">
-            <img
-              src="https://horizon-wiring.co.uk/wp-content/uploads/Quality.64e4cafe2aebd.svg"
-              alt=""
-              aria-hidden="true"
-            >
-            <h3>Quality</h3>
-            <p>
-              Built-in checkpoints make inspection, continuity checks, and
-              handover status easy to track across every project.
-            </p>
+          <article class="summary-card">
+            <span>Available staff hours</span>
+            <strong id="summary-capacity">0h</strong>
           </article>
-
-          <article class="value-card">
-            <img
-              src="https://horizon-wiring.co.uk/wp-content/uploads/Customisation.64e4cafa75272.svg"
-              alt=""
-              aria-hidden="true"
-            >
-            <h3>Customisation</h3>
-            <p>
-              Flexible project views adapt to bespoke motorsport, marine, and
-              specialist electrical workflows.
-            </p>
+          <article class="summary-card">
+            <span>Allocated hours</span>
+            <strong id="summary-allocated">0h</strong>
           </article>
-
-          <article class="value-card">
-            <img
-              src="https://horizon-wiring.co.uk/wp-content/uploads/Customer-Service.64e4cafc32fe6.svg"
-              alt=""
-              aria-hidden="true"
-            >
-            <h3>Customer Service</h3>
-            <p>
-              Simple status sharing keeps clients, workshop leads, and support
-              teams aligned from consultation to completion.
-            </p>
+          <article class="summary-card">
+            <span>Unallocated hours</span>
+            <strong id="summary-gap">0h</strong>
           </article>
+        </section>
+
+        <div class="workspace-grid">
+          <section class="panel" aria-labelledby="projects-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Demand</p>
+                <h2 id="projects-title">Projects and hours</h2>
+              </div>
+              <button id="load-sample-projects" type="button" class="button secondary">Load sample projects</button>
+            </div>
+
+            <form id="project-form" class="entry-grid">
+              <label>
+                Project name
+                <input id="project-name" type="text" placeholder="Packaging redesign" required>
+              </label>
+              <label>
+                Hours required
+                <input id="project-hours" type="number" min="0.5" step="0.5" placeholder="24" required>
+              </label>
+              <label>
+                Required competence
+                <select id="project-competence" required></select>
+              </label>
+              <label>
+                Week
+                <input id="project-week" type="week" required>
+              </label>
+              <button type="submit" class="button primary">Add project</button>
+            </form>
+
+            <div class="upload-box">
+              <div>
+                <h3>Upload projects CSV</h3>
+                <p class="muted">
+                  Use columns: <code>project</code>, <code>hours</code>, <code>competence</code>, <code>week</code>.
+                </p>
+              </div>
+              <label class="file-input">
+                <input id="project-upload" type="file" accept=".csv,text/csv">
+                Choose CSV
+              </label>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Week</th>
+                    <th>Hours</th>
+                    <th>Competence</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="projects-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="staff-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Capacity</p>
+                <h2 id="staff-title">Staff and competence</h2>
+              </div>
+              <button id="load-sample-staff" type="button" class="button secondary">Load sample staff</button>
+            </div>
+
+            <form id="staff-form" class="entry-grid">
+              <label>
+                Staff name
+                <input id="staff-name" type="text" placeholder="Alex Morgan" required>
+              </label>
+              <label>
+                Working hours
+                <input id="staff-hours" type="number" min="0.5" step="0.5" placeholder="37.5" required>
+              </label>
+              <label>
+                Competence level
+                <select id="staff-competence" required></select>
+              </label>
+              <button type="submit" class="button primary">Add staff</button>
+            </form>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Hours</th>
+                    <th>Competence</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="staff-table"></tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </section>
 
-      <section class="cta-band">
-        <p class="eyebrow">Ready for the next build?</p>
-        <h2>Bring structure and confidence to every wiring project.</h2>
-        <a class="button button-primary" href="#contact">Contact Us</a>
+        <section class="panel planner-panel" aria-labelledby="planner-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Weekly view</p>
+              <h2 id="planner-title">Allocation plan</h2>
+            </div>
+            <button id="clear-data" type="button" class="button danger">Clear all data</button>
+          </div>
+
+          <div id="capacity-bars" class="capacity-bars" aria-label="Competence capacity"></div>
+          <div id="planner-empty" class="empty-state" hidden>
+            Add projects and staff, or load the sample data, to generate a weekly plan.
+          </div>
+          <div id="planner-output" class="planner-output"></div>
+        </section>
       </section>
     </main>
 
-    <footer class="site-footer" id="contact">
-      <div>
-        <a class="brand footer-brand" href="#top" aria-label="HWPlanner home">
-          <img
-            class="brand-logo brand-logo-grey"
-            src="https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/images/Logo-Grey.c5ae9c7faa695eb4d57c9bc413125fad.svg"
-            alt="Horizon Wiring"
-          >
-          <span class="brand-tag">Planner</span>
-        </a>
-      </div>
+    <template id="empty-row-template">
+      <tr>
+        <td colspan="5" class="empty-cell">No records yet.</td>
+      </tr>
+    </template>
 
-      <address class="footer-details">
-        <a href="tel:01379770821">01379 770821</a>
-        <a href="mailto:sales@horizon-wiring.co.uk">sales@horizon-wiring.co.uk</a>
-        <span>Unit M1, Gilray Road, Diss, IP22 4EU</span>
-      </address>
-
-      <div class="footer-meta">
-        <a href="https://www.instagram.com/horizonwiringltd/">Instagram</a>
-        <a href="https://www.linkedin.com/company/horizon-wiring-ltd/about/">LinkedIn</a>
-        <span>&copy; 2026 HWPlanner</span>
-      </div>
-    </footer>
+    <script src="app.js" defer></script>
   </body>
 </html>
