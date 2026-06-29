@@ -32,6 +32,11 @@
           </div>
         </header>
 
+        <section class="access-banner" id="access-banner" aria-live="polite">
+          <strong id="access-role">Loading access</strong>
+          <span id="access-description">Checking your view and edit permissions.</span>
+        </section>
+
         <section class="summary-grid" aria-label="Weekly summary">
           <article class="summary-card">
             <span>Total project hours</span>
@@ -58,10 +63,10 @@
                 <p class="eyebrow">Demand</p>
                 <h2 id="projects-title">Projects and hours</h2>
               </div>
-              <button id="load-sample-projects" type="button" class="button secondary">Load sample projects</button>
+              <button id="load-sample-projects" type="button" class="button secondary" data-permission="edit-planning">Load sample projects</button>
             </div>
 
-            <form id="project-form" class="entry-grid">
+            <form id="project-form" class="entry-grid" data-permission="edit-planning">
               <label>
                 Project name
                 <input id="project-name" type="text" placeholder="Packaging redesign" required>
@@ -113,13 +118,13 @@
           <section class="panel" aria-labelledby="staff-title">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Capacity</p>
-                <h2 id="staff-title">Staff and competence</h2>
+                <p class="eyebrow">Staff Access</p>
+                <h2 id="staff-title">Staff members and login details</h2>
               </div>
-              <button id="load-sample-staff" type="button" class="button secondary">Load sample staff</button>
+              <button id="load-sample-staff" type="button" class="button secondary" data-permission="manage-users">Load sample staff</button>
             </div>
 
-            <form id="staff-form" class="entry-grid">
+            <form id="staff-form" class="entry-grid" data-permission="manage-users">
               <label>
                 Staff name
                 <input id="staff-name" type="text" placeholder="Alex Morgan" required>
@@ -129,17 +134,48 @@
                 <input id="staff-hours" type="number" min="0.5" step="0.5" placeholder="37.5" required>
               </label>
               <label>
+                Role
+                <select id="staff-role" required>
+                  <option value="Management">Management</option>
+                  <option value="Lead">Lead</option>
+                  <option value="Tech" selected>Tech</option>
+                  <option value="Inspection">Inspection</option>
+                </select>
+              </label>
+              <label>
+                Staff rating
+                <select id="staff-rating" required>
+                  <option value="1">1 - Developing</option>
+                  <option value="2">2 - Capable</option>
+                  <option value="3" selected>3 - Skilled</option>
+                  <option value="4">4 - Senior</option>
+                  <option value="5">5 - Expert</option>
+                </select>
+              </label>
+              <label>
                 Competence level
                 <select id="staff-competence" required></select>
               </label>
+              <label>
+                Login email
+                <input id="staff-email" type="email" placeholder="name@horizon-wiring.co.uk" autocomplete="off" required>
+              </label>
+              <label>
+                Login password
+                <input id="staff-password" type="password" minlength="10" placeholder="Minimum 10 characters" autocomplete="new-password" required>
+              </label>
               <button type="submit" class="button primary">Add staff</button>
             </form>
+            <p id="staff-form-message" class="form-message" role="status"></p>
 
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Role</th>
+                    <th>Rating</th>
+                    <th data-sensitive="staff-login">Login email</th>
                     <th>Hours</th>
                     <th>Competence</th>
                     <th></th>
@@ -157,7 +193,7 @@
               <p class="eyebrow">Weekly view</p>
               <h2 id="planner-title">Allocation plan</h2>
             </div>
-            <button id="clear-data" type="button" class="button danger">Clear all data</button>
+            <button id="clear-data" type="button" class="button danger" data-permission="clear-data">Clear all data</button>
           </div>
 
           <div id="capacity-bars" class="capacity-bars" aria-label="Competence capacity"></div>

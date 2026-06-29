@@ -77,6 +77,28 @@ code {
   box-shadow: var(--shadow);
 }
 
+.access-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.95rem 1.1rem;
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+  border: 1px solid var(--horizon-border);
+}
+
+.access-banner strong {
+  font-family: "GilroyBold", Arial, sans-serif;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.access-banner span {
+  color: rgba(49, 49, 51, 0.78);
+}
+
 .app-brand-block,
 .brand-lockup {
   display: flex;
@@ -656,6 +678,7 @@ tbody tr:hover td {
   .app-header,
   .panel-heading,
   .upload-box,
+  .access-banner,
   .header-actions {
     display: grid;
   }

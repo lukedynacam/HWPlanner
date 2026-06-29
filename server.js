@@ -21,6 +21,7 @@ const PUBLIC_FILES = new Set([
 ]);
 
 const PROTECTED_FILES = new Set([
+  "/app.js",
   "/app/app.js",
   "/app/index.html",
   "/app/styles.css",
@@ -34,6 +35,39 @@ const MIME_TYPES = {
 };
 
 const sessions = new Map();
+
+const ROLE_PERMISSIONS = {
+  Admin: {
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Management: {
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Lead: {
+    canManageUsers: false,
+    canEditPlanning: true,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Tech: {
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Inspection: {
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+};
 
 async function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
   const hash = await new Promise((resolve, reject) => {
@@ -70,6 +104,7 @@ async function readAuthData() {
   try {
     const data = JSON.parse(await fs.readFile(DATA_FILE, "utf8"));
     data.adminEmail = (data.adminEmail || ADMIN_EMAIL).toLowerCase();
+    data.users = Array.isArray(data.users) ? data.users : [];
     return data;
   } catch (error) {
     if (error.code !== "ENOENT") {
@@ -82,6 +117,7 @@ async function readAuthData() {
         ? await hashPassword(process.env.ADMIN_PASSWORD)
         : null,
       reset: null,
+      users: [],
     };
 
     await writeAuthData(initialData);
@@ -132,10 +168,55 @@ function getSession(request) {
   return { token, ...session };
 }
 
-function createSession(email) {
+function publicUser(user) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    rating: user.rating,
+    createdAt: user.createdAt,
+  };
+}
+
+function permissionsForRole(role) {
+  return ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.Tech;
+}
+
+function canManageUsers(session) {
+  return Boolean(permissionsForRole(session?.role).canManageUsers);
+}
+
+function normaliseRole(role) {
+  const value = String(role || "").trim().toLowerCase();
+  if (value === "management") {
+    return "Management";
+  }
+  if (value === "lead") {
+    return "Lead";
+  }
+  if (value === "inspection") {
+    return "Inspection";
+  }
+  return "Tech";
+}
+
+function normaliseRating(rating) {
+  const parsed = Number(rating);
+  if (!Number.isFinite(parsed)) {
+    return 1;
+  }
+  return Math.min(5, Math.max(1, Math.round(parsed)));
+}
+
+function createSession(email, user = {}) {
   const token = crypto.randomBytes(32).toString("hex");
   sessions.set(token, {
     email,
+    name: user.name || (email === ADMIN_EMAIL ? "Admin" : email),
+    role: user.role || (email === ADMIN_EMAIL ? "Admin" : "Tech"),
+    rating: user.rating || null,
+    permissions: permissionsForRole(user.role || (email === ADMIN_EMAIL ? "Admin" : "Tech")),
     expiresAt: Date.now() + SESSION_TTL_MS,
   });
   return token;
@@ -249,7 +330,86 @@ async function handleApi(request, response, pathname) {
       return;
     }
 
-    sendJson(response, 200, { authenticated: true, email: session.email });
+    sendJson(response, 200, {
+      authenticated: true,
+      email: session.email,
+      name: session.name,
+      role: session.role,
+      rating: session.rating,
+      permissions: session.permissions || permissionsForRole(session.role),
+    });
+    return;
+  }
+
+  if (request.method === "GET" && pathname === "/api/users") {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "You do not have access to manage staff accounts." });
+      return;
+    }
+
+    const authData = await readAuthData();
+    sendJson(response, 200, {
+      users: authData.users.map(publicUser),
+    });
+    return;
+  }
+
+  if (request.method === "POST" && pathname === "/api/users") {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "Only Admin and Management can create staff logins." });
+      return;
+    }
+
+    const body = await readJsonBody(request);
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+    const role = normaliseRole(body.role);
+    const rating = normaliseRating(body.rating);
+
+    if (!name || !email || !email.includes("@")) {
+      sendJson(response, 400, { message: "Enter a staff name and valid email." });
+      return;
+    }
+
+    if (password.length < 10) {
+      sendJson(response, 400, {
+        message: "Staff passwords must be at least 10 characters.",
+      });
+      return;
+    }
+
+    const authData = await readAuthData();
+    if (email === authData.adminEmail || authData.users.some((user) => user.email === email)) {
+      sendJson(response, 409, { message: "A login already exists for that email." });
+      return;
+    }
+
+    const user = {
+      id: crypto.randomUUID(),
+      name,
+      email,
+      role,
+      rating,
+      passwordHash: await hashPassword(password),
+      createdAt: new Date().toISOString(),
+    };
+    authData.users.push(user);
+    await writeAuthData(authData);
+
+    sendJson(response, 201, { user: publicUser(user) });
     return;
   }
 
@@ -258,9 +418,11 @@ async function handleApi(request, response, pathname) {
     const email = String(body.email || "").trim().toLowerCase();
     const password = String(body.password || "");
     const authData = await readAuthData();
+    const staffUser = authData.users.find((user) => user.email === email);
     const isValid =
-      email === authData.adminEmail &&
-      (await verifyPassword(password, authData.passwordHash));
+      email === authData.adminEmail
+        ? await verifyPassword(password, authData.passwordHash)
+        : await verifyPassword(password, staffUser?.passwordHash);
 
     if (!isValid) {
       sendJson(response, 401, {
@@ -269,7 +431,7 @@ async function handleApi(request, response, pathname) {
       return;
     }
 
-    const token = createSession(email);
+    const token = createSession(email, staffUser);
     sendJson(
       response,
       200,
@@ -301,9 +463,11 @@ async function handleApi(request, response, pathname) {
     let resetLink = null;
     let emailSent = false;
 
-    if (email === authData.adminEmail) {
+    const resetUser = authData.users.find((user) => user.email === email);
+    if (email === authData.adminEmail || resetUser) {
       const token = crypto.randomBytes(32).toString("hex");
       authData.reset = {
+        email,
         tokenHash: hashToken(token),
         expiresAt: Date.now() + RESET_TTL_MS,
       };
@@ -358,7 +522,19 @@ async function handleApi(request, response, pathname) {
       return;
     }
 
-    authData.passwordHash = await hashPassword(password);
+    if (reset.email === authData.adminEmail) {
+      authData.passwordHash = await hashPassword(password);
+    } else {
+      const resetUser = authData.users.find((user) => user.email === reset.email);
+      if (!resetUser) {
+        sendJson(response, 400, {
+          message: "This reset link is invalid or has expired.",
+        });
+        return;
+      }
+
+      resetUser.passwordHash = await hashPassword(password);
+    }
     authData.reset = null;
     await writeAuthData(authData);
     sessions.clear();
