@@ -15,10 +15,10 @@ const SAMPLE_PROJECTS = [
 ];
 
 const SAMPLE_STAFF = [
-  { name: "Alex Morgan", hours: 37.5, competence: 4 },
-  { name: "Priya Shah", hours: 30, competence: 3 },
-  { name: "Sam Lee", hours: 37.5, competence: 2 },
-  { name: "Jordan Ellis", hours: 20, competence: 1 },
+  { name: "Alex Morgan", hours: 37.5, competence: 4, role: "Management", rating: 5 },
+  { name: "Priya Shah", hours: 30, competence: 3, role: "Lead", rating: 4 },
+  { name: "Sam Lee", hours: 37.5, competence: 2, role: "Tech", rating: 3 },
+  { name: "Jordan Ellis", hours: 20, competence: 1, role: "Tech", rating: 2 },
 ];
 
 const state = loadState();
@@ -36,7 +36,12 @@ const elements = {
   staffForm: document.querySelector("#staff-form"),
   staffName: document.querySelector("#staff-name"),
   staffHours: document.querySelector("#staff-hours"),
+  staffRole: document.querySelector("#staff-role"),
+  staffRating: document.querySelector("#staff-rating"),
   staffCompetence: document.querySelector("#staff-competence"),
+  staffEmail: document.querySelector("#staff-email"),
+  staffPassword: document.querySelector("#staff-password"),
+  staffFormMessage: document.querySelector("#staff-form-message"),
   staffTable: document.querySelector("#staff-table"),
   summaryDemand: document.querySelector("#summary-demand"),
   summaryCapacity: document.querySelector("#summary-capacity"),
@@ -112,15 +117,41 @@ function handleProjectSubmit(event) {
   elements.projectWeek.value = state.selectedWeek;
 }
 
-function handleStaffSubmit(event) {
+async function handleStaffSubmit(event) {
   event.preventDefault();
-  addStaff({
+  setStaffMessage("Creating staff member...");
+  const staffMember = {
     name: elements.staffName.value,
     hours: elements.staffHours.value,
+    role: elements.staffRole.value,
+    rating: elements.staffRating.value,
     competence: elements.staffCompetence.value,
-  });
-  elements.staffForm.reset();
-  elements.staffCompetence.value = "1";
+    email: elements.staffEmail.value,
+  };
+
+  const normalised = normaliseStaff(staffMember);
+  if (!normalised) {
+    setStaffMessage("Enter a name, hours, role, rating, competence and login email.", "error");
+    return;
+  }
+
+  try {
+    const user = await createStaffLogin({
+      name: normalised.name,
+      role: normalised.role,
+      rating: normalised.rating,
+      email: normalised.email,
+      password: elements.staffPassword.value,
+    });
+    addStaff({ ...normalised, userId: user.id, email: user.email });
+    elements.staffForm.reset();
+    elements.staffRole.value = "Tech";
+    elements.staffRating.value = "3";
+    elements.staffCompetence.value = "1";
+    setStaffMessage(`Staff login created for ${user.email}.`, "success");
+  } catch (error) {
+    setStaffMessage(error.message, "error");
+  }
 }
 
 async function handleProjectUpload(event) {
@@ -211,6 +242,32 @@ function addStaff(staffMember) {
   render();
 }
 
+async function createStaffLogin(staffMember) {
+  const response = await fetch("/api/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(staffMember),
+  });
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(payload.message || "Could not create staff login.");
+  }
+
+  return payload.user;
+}
+
+function setStaffMessage(message, type = "info") {
+  if (!elements.staffFormMessage) {
+    return;
+  }
+
+  elements.staffFormMessage.textContent = message;
+  elements.staffFormMessage.dataset.type = type;
+}
+
 function normaliseProject(project) {
   const name = String(project.name || "").trim();
   const hours = Number(project.hours);
@@ -234,17 +291,46 @@ function normaliseStaff(staffMember) {
   const name = String(staffMember.name || "").trim();
   const hours = Number(staffMember.hours);
   const competence = parseCompetence(staffMember.competence);
+  const role = normaliseRole(staffMember.role);
+  const rating = normaliseRating(staffMember.rating);
+  const email = String(staffMember.email || "").trim().toLowerCase();
 
-  if (!name || !Number.isFinite(hours) || hours <= 0 || !competence) {
+  if (!name || !Number.isFinite(hours) || hours <= 0 || !competence || !role || !rating) {
     return null;
   }
 
   return {
-    id: createId("staff"),
+    id: staffMember.id || createId("staff"),
+    userId: staffMember.userId || null,
     name,
     hours,
     competence,
+    role,
+    rating,
+    email,
   };
+}
+
+function normaliseRole(value) {
+  const role = String(value || "").trim().toLowerCase();
+  if (role === "management") {
+    return "Management";
+  }
+  if (role === "lead") {
+    return "Lead";
+  }
+  if (role === "tech") {
+    return "Tech";
+  }
+  return null;
+}
+
+function normaliseRating(value) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 1 || parsed > 5) {
+    return null;
+  }
+  return Math.round(parsed);
 }
 
 function parseCompetence(value) {
@@ -348,7 +434,7 @@ function renderStaff() {
   const staff = [...state.staff].sort((first, second) => first.name.localeCompare(second.name));
 
   if (!staff.length) {
-    renderEmptyRow(elements.staffTable, 4);
+    renderEmptyRow(elements.staffTable, 7);
     return;
   }
 
@@ -357,6 +443,9 @@ function renderStaff() {
       const row = document.createElement("tr");
       row.append(
         tableCell(staffMember.name),
+        tableCell(roleBadge(staffMember.role)),
+        tableCell(ratingBadge(staffMember.rating)),
+        tableCell(staffMember.email || "No login"),
         tableCell(formatHours(staffMember.hours)),
         tableCell(competenceBadge(staffMember.competence)),
         tableCell(removeButton("staff", staffMember.id)),
@@ -490,7 +579,7 @@ function renderStaffPlan(staffMember) {
       createElement("div", {}, [
         createElement("h3", {}, [staffMember.name]),
         createElement("p", { class: "allocation-note" }, [
-          `${formatHours(usedHours)} of ${formatHours(staffMember.hours)} used (${utilisation}%)`,
+          `${staffMember.role || "Tech"} | Rating ${staffMember.rating || 1}/5 | ${formatHours(usedHours)} of ${formatHours(staffMember.hours)} used (${utilisation}%)`,
         ]),
       ]),
       competenceBadge(staffMember.competence),
@@ -520,6 +609,14 @@ function renderStaffPlan(staffMember) {
     ),
   );
   return card;
+}
+
+function roleBadge(role) {
+  return createElement("span", { class: "badge role-badge" }, [role || "Tech"]);
+}
+
+function ratingBadge(rating) {
+  return createElement("span", { class: "badge rating-badge" }, [`${rating || 1}/5`]);
 }
 
 function renderUnallocatedPlan(unallocated) {
