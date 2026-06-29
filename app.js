@@ -18,13 +18,59 @@ const SAMPLE_STAFF = [
   { name: "Alex Morgan", hours: 37.5, competence: 4, role: "Management", rating: 5 },
   { name: "Priya Shah", hours: 30, competence: 3, role: "Lead", rating: 4 },
   { name: "Sam Lee", hours: 37.5, competence: 2, role: "Tech", rating: 3 },
-  { name: "Jordan Ellis", hours: 20, competence: 1, role: "Tech", rating: 2 },
+  { name: "Jordan Ellis", hours: 20, competence: 1, role: "Inspection", rating: 2 },
 ];
 
+const ROLE_ACCESS = {
+  Admin: {
+    label: "Admin access",
+    description: "Full view and edit access, including staff login management.",
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Management: {
+    label: "Management access",
+    description: "Can edit planning data and manage staff login accounts.",
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Lead: {
+    label: "Lead access",
+    description: "Can edit project planning, but cannot manage staff login details.",
+    canManageUsers: false,
+    canEditPlanning: true,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Tech: {
+    label: "Tech access",
+    description: "Can view planning and allocation information only.",
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Inspection: {
+    label: "Inspection access",
+    description: "Can view schedule and allocation information for inspection review only.",
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+};
+
 const state = loadState();
+let currentAccess = ROLE_ACCESS.Tech;
 
 const elements = {
   appView: document.querySelector("#app-view"),
+  accessRole: document.querySelector("#access-role"),
+  accessDescription: document.querySelector("#access-description"),
   planningWeek: document.querySelector("#planning-week"),
   projectForm: document.querySelector("#project-form"),
   projectName: document.querySelector("#project-name"),
@@ -58,9 +104,10 @@ const elements = {
 
 initialise();
 
-function initialise() {
+async function initialise() {
   populateCompetenceOptions();
   bindEvents();
+  await loadSessionAccess();
 
   if (!state.selectedWeek) {
     state.selectedWeek = currentWeekValue();
@@ -70,6 +117,24 @@ function initialise() {
   elements.planningWeek.value = state.selectedWeek;
   elements.projectWeek.value = state.selectedWeek;
   render();
+}
+
+async function loadSessionAccess() {
+  try {
+    const response = await fetch("/api/session");
+    if (!response.ok) {
+      window.location.assign("/login.html");
+      return;
+    }
+
+    const session = await response.json();
+    currentAccess = {
+      ...(ROLE_ACCESS[session.role] || ROLE_ACCESS.Tech),
+      ...(session.permissions || {}),
+    };
+  } catch (error) {
+    currentAccess = ROLE_ACCESS.Tech;
+  }
 }
 
 function populateCompetenceOptions() {
@@ -97,6 +162,48 @@ function bindEvents() {
   elements.clearData.addEventListener("click", clearAllData);
 }
 
+function applyAccessControls() {
+  if (elements.accessRole) {
+    elements.accessRole.textContent = currentAccess.label;
+  }
+  if (elements.accessDescription) {
+    elements.accessDescription.textContent = currentAccess.description;
+  }
+
+  document.querySelectorAll("[data-permission]").forEach((element) => {
+    const permission = element.dataset.permission;
+    const isAllowed =
+      (permission === "manage-users" && currentAccess.canManageUsers) ||
+      (permission === "edit-planning" && currentAccess.canEditPlanning) ||
+      (permission === "clear-data" && currentAccess.canClearData);
+
+    if (element.tagName === "FORM") {
+      element.hidden = !isAllowed;
+      return;
+    }
+
+    element.hidden = !isAllowed;
+    element.disabled = !isAllowed;
+  });
+
+  document.querySelectorAll('[data-sensitive="staff-login"]').forEach((element) => {
+    element.hidden = !currentAccess.canViewStaffLogins;
+  });
+}
+
+function assertCanManageUsers() {
+  if (currentAccess.canManageUsers) {
+    return true;
+  }
+
+  setStaffMessage("Your role can view staff capacity but cannot manage staff logins.", "error");
+  return false;
+}
+
+function assertCanEditPlanning() {
+  return Boolean(currentAccess.canEditPlanning);
+}
+
 function handleWeekChange() {
   state.selectedWeek = elements.planningWeek.value || currentWeekValue();
   elements.projectWeek.value = state.selectedWeek;
@@ -106,6 +213,10 @@ function handleWeekChange() {
 
 function handleProjectSubmit(event) {
   event.preventDefault();
+  if (!assertCanEditPlanning()) {
+    return;
+  }
+
   addProject({
     name: elements.projectName.value,
     hours: elements.projectHours.value,
@@ -119,6 +230,10 @@ function handleProjectSubmit(event) {
 
 async function handleStaffSubmit(event) {
   event.preventDefault();
+  if (!assertCanManageUsers()) {
+    return;
+  }
+
   setStaffMessage("Creating staff member...");
   const staffMember = {
     name: elements.staffName.value,
@@ -155,6 +270,11 @@ async function handleStaffSubmit(event) {
 }
 
 async function handleProjectUpload(event) {
+  if (!assertCanEditPlanning()) {
+    event.target.value = "";
+    return;
+  }
+
   const [file] = event.target.files;
   if (!file) {
     return;
@@ -179,6 +299,10 @@ async function handleProjectUpload(event) {
 }
 
 function handleProjectRemove(event) {
+  if (!assertCanEditPlanning()) {
+    return;
+  }
+
   const button = event.target.closest("[data-remove-project]");
   if (!button) {
     return;
@@ -190,6 +314,10 @@ function handleProjectRemove(event) {
 }
 
 function handleStaffRemove(event) {
+  if (!assertCanManageUsers()) {
+    return;
+  }
+
   const button = event.target.closest("[data-remove-staff]");
   if (!button) {
     return;
@@ -201,14 +329,26 @@ function handleStaffRemove(event) {
 }
 
 function addSampleProjects() {
+  if (!assertCanEditPlanning()) {
+    return;
+  }
+
   SAMPLE_PROJECTS.forEach((project) => addProject({ ...project, week: state.selectedWeek }));
 }
 
 function addSampleStaff() {
+  if (!assertCanManageUsers()) {
+    return;
+  }
+
   SAMPLE_STAFF.forEach(addStaff);
 }
 
 function clearAllData() {
+  if (!currentAccess.canClearData) {
+    return;
+  }
+
   const confirmed = window.confirm("Clear all projects and staff from this planner?");
   if (!confirmed) {
     return;
@@ -322,6 +462,9 @@ function normaliseRole(value) {
   if (role === "tech") {
     return "Tech";
   }
+  if (role === "inspection") {
+    return "Inspection";
+  }
   return null;
 }
 
@@ -403,6 +546,7 @@ function render() {
   renderProjects();
   renderStaff();
   renderPlanner();
+  applyAccessControls();
 }
 
 function renderProjects() {
@@ -423,7 +567,7 @@ function renderProjects() {
         tableCell(formatWeek(project.week)),
         tableCell(formatHours(project.hours)),
         tableCell(competenceBadge(project.competence)),
-        tableCell(removeButton("project", project.id)),
+        tableCell(currentAccess.canEditPlanning ? removeButton("project", project.id) : ""),
       );
       return row;
     }),
@@ -445,10 +589,10 @@ function renderStaff() {
         tableCell(staffMember.name),
         tableCell(roleBadge(staffMember.role)),
         tableCell(ratingBadge(staffMember.rating)),
-        tableCell(staffMember.email || "No login"),
+        sensitiveTableCell(staffMember.email || "No login", "staff-login"),
         tableCell(formatHours(staffMember.hours)),
         tableCell(competenceBadge(staffMember.competence)),
-        tableCell(removeButton("staff", staffMember.id)),
+        tableCell(currentAccess.canManageUsers ? removeButton("staff", staffMember.id) : ""),
       );
       return row;
     }),
@@ -666,6 +810,12 @@ function tableCell(content) {
   } else {
     cell.textContent = content;
   }
+  return cell;
+}
+
+function sensitiveTableCell(content, sensitivity) {
+  const cell = tableCell(currentAccess.canViewStaffLogins ? content : "Restricted");
+  cell.dataset.sensitive = sensitivity;
   return cell;
 }
 

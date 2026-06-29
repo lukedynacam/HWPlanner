@@ -36,6 +36,39 @@ const MIME_TYPES = {
 
 const sessions = new Map();
 
+const ROLE_PERMISSIONS = {
+  Admin: {
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Management: {
+    canManageUsers: true,
+    canEditPlanning: true,
+    canClearData: true,
+    canViewStaffLogins: true,
+  },
+  Lead: {
+    canManageUsers: false,
+    canEditPlanning: true,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Tech: {
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+  Inspection: {
+    canManageUsers: false,
+    canEditPlanning: false,
+    canClearData: false,
+    canViewStaffLogins: false,
+  },
+};
+
 async function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
   const hash = await new Promise((resolve, reject) => {
     crypto.scrypt(password, salt, 64, (error, derivedKey) => {
@@ -146,6 +179,14 @@ function publicUser(user) {
   };
 }
 
+function permissionsForRole(role) {
+  return ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.Tech;
+}
+
+function canManageUsers(session) {
+  return Boolean(permissionsForRole(session?.role).canManageUsers);
+}
+
 function normaliseRole(role) {
   const value = String(role || "").trim().toLowerCase();
   if (value === "management") {
@@ -153,6 +194,9 @@ function normaliseRole(role) {
   }
   if (value === "lead") {
     return "Lead";
+  }
+  if (value === "inspection") {
+    return "Inspection";
   }
   return "Tech";
 }
@@ -172,6 +216,7 @@ function createSession(email, user = {}) {
     name: user.name || (email === ADMIN_EMAIL ? "Admin" : email),
     role: user.role || (email === ADMIN_EMAIL ? "Admin" : "Tech"),
     rating: user.rating || null,
+    permissions: permissionsForRole(user.role || (email === ADMIN_EMAIL ? "Admin" : "Tech")),
     expiresAt: Date.now() + SESSION_TTL_MS,
   });
   return token;
@@ -291,6 +336,7 @@ async function handleApi(request, response, pathname) {
       name: session.name,
       role: session.role,
       rating: session.rating,
+      permissions: session.permissions || permissionsForRole(session.role),
     });
     return;
   }
@@ -299,6 +345,11 @@ async function handleApi(request, response, pathname) {
     const session = getSession(request);
     if (!session) {
       sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "You do not have access to manage staff accounts." });
       return;
     }
 
@@ -313,6 +364,11 @@ async function handleApi(request, response, pathname) {
     const session = getSession(request);
     if (!session) {
       sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "Only Admin and Management can create staff logins." });
       return;
     }
 

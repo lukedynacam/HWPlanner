@@ -52,7 +52,7 @@ The weekly planner includes a staff section for adding:
 
 - Staff name
 - Working hours
-- Role: `Management`, `Lead`, or `Tech`
+- Role: `Management`, `Lead`, `Tech`, or `Inspection`
 - Staff rating from 1 to 5
 - Competence level
 - Login email and password
@@ -60,3 +60,13 @@ The weekly planner includes a staff section for adding:
 Adding a staff member creates a server-side login account for that email. Staff
 members can sign in through the same login page and can use the forgot-password
 flow if SMTP is configured.
+
+## Role access
+
+Current role access is:
+
+- `Admin` - full view/edit access and staff login management.
+- `Management` - can edit planning data and manage staff login accounts.
+- `Lead` - can edit planning data, but cannot manage staff login details.
+- `Tech` - view-only planning and allocation access.
+- `Inspection` - view-only schedule/allocation access for inspection review.
