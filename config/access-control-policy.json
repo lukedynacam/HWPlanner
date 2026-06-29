@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "defaultAccess": "deny",
+  "roles": {
+    "admin": {
+      "label": "Admin",
+      "description": "Full system ownership across users, settings, and operational data.",
+      "permissions": {
+        "*": {
+          "scope": "all",
+          "actions": ["view", "create", "edit", "delete", "manage"]
+        }
+      }
+    },
+    "management": {
+      "label": "Management",
+      "description": "Organization-wide operational access without administrative configuration rights.",
+      "permissions": {
+        "users": {
+          "scope": "all",
+          "actions": ["view"]
+        },
+        "audit_log": {
+          "scope": "all",
+          "actions": ["view"]
+        },
+        "management_dashboard": {
+          "scope": "all",
+          "actions": ["view", "edit"]
+        },
+        "lead_dashboard": {
+          "scope": "all",
+          "actions": ["view", "edit"]
+        },
+        "inspection_dashboard": {
+          "scope": "all",
+          "actions": ["view", "edit"]
+        },
+        "projects": {
+          "scope": "all",
+          "actions": ["view", "create", "edit"]
+        },
+        "lead_records": {
+          "scope": "all",
+          "actions": ["view", "create", "edit"]
+        },
+        "inspections": {
+          "scope": "all",
+          "actions": ["view", "create", "edit"]
+        },
+        "reports": {
+          "scope": "all",
+          "actions": ["view", "create", "edit"]
+        }
+      }
+    },
+    "leads": {
+      "label": "Leads",
+      "description": "Scoped team or assignment-based access for lead users.",
+      "permissions": {
+        "management_dashboard": {
+          "scope": "assigned_or_team",
+          "actions": ["view"]
+        },
+        "lead_dashboard": {
+          "scope": "assigned_or_team",
+          "actions": ["view", "edit"]
+        },
+        "inspection_dashboard": {
+          "scope": "assigned_or_team",
+          "actions": ["view"]
+        },
+        "projects": {
+          "scope": "assigned_or_team",
+          "actions": ["view", "edit"]
+        },
+        "lead_records": {
+          "scope": "assigned_or_team",
+          "actions": ["view", "create", "edit"]
+        },
+        "inspections": {
+          "scope": "assigned_or_team",
+          "actions": ["view", "create", "edit"]
+        },
+        "reports": {
+          "scope": "assigned_or_team",
+          "actions": ["view"]
+        }
+      }
+    },
+    "inspection": {
+      "label": "Inspection",
+      "description": "Assigned inspection-only access for field inspection users.",
+      "permissions": {
+        "inspection_dashboard": {
+          "scope": "assigned",
+          "actions": ["view", "edit"]
+        },
+        "projects": {
+          "scope": "assigned_inspection_related",
+          "actions": ["view"]
+        },
+        "inspections": {
+          "scope": "assigned",
+          "actions": ["view", "edit"]
+        },
+        "inspection_notes": {
+          "scope": "assigned",
+          "actions": ["view", "create", "edit"]
+        },
+        "inspection_photos": {
+          "scope": "assigned",
+          "actions": ["view", "create", "edit"]
+        },
+        "reports": {
+          "scope": "own_inspection_work",
+          "actions": ["view"]
+        }
+      }
+    }
+  },
+  "resources": [
+    "users",
+    "settings",
+    "audit_log",
+    "management_dashboard",
+    "lead_dashboard",
+    "inspection_dashboard",
+    "projects",
+    "lead_records",
+    "inspections",
+    "inspection_notes",
+    "inspection_photos",
+    "reports"
+  ],
+  "actions": ["view", "create", "edit", "delete", "manage"],
+  "scopeRules": {
+    "all": "User can access every record for the resource.",
+    "assigned_or_team": "User can access records assigned to them or to a team they lead.",
+    "assigned": "User can access records directly assigned to them.",
+    "assigned_inspection_related": "User can view records attached to inspections assigned to them.",
+    "own_inspection_work": "User can view reports generated from inspections they completed."
+  }
+}
