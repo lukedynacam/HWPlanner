@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HWPlanner Scheduling Programme</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <h1>HWPlanner</h1>
+        <p>Input data and scheduling programme</p>
+      </div>
+      <nav aria-label="Primary navigation">
+        <button class="nav-button active" type="button" data-page-target="input-page">Input Data</button>
+        <button class="nav-button" type="button" data-page-target="schedule-page">Scheduling Programme</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="input-page" class="page active" aria-labelledby="input-heading">
+        <div class="page-heading">
+          <div>
+            <h2 id="input-heading">Input Data</h2>
+            <p>Enter each job in the same column order as the scheduling sheet.</p>
+          </div>
+          <button id="clear-form-button" class="secondary-button" type="button">Clear Form</button>
+        </div>
+
+        <form id="schedule-form" class="input-form">
+          <input type="hidden" id="record-id" name="recordId">
+
+          <div class="form-grid">
+            <label>
+              <span>Customer</span>
+              <input id="customer" name="customer" type="text" autocomplete="organization" required>
+            </label>
+
+            <label>
+              <span>Part No.</span>
+              <input id="partNumber" name="partNumber" type="text" required>
+            </label>
+
+            <label>
+              <span>Description</span>
+              <input id="description" name="description" type="text">
+            </label>
+
+            <label>
+              <span>Hours</span>
+              <input id="hours" name="hours" type="number" min="0" step="0.25">
+            </label>
+
+            <label>
+              <span>Pick</span>
+              <input id="pick" name="pick" type="text">
+            </label>
+
+            <label>
+              <span>Job Card</span>
+              <input id="jobCard" name="jobCard" type="text">
+            </label>
+
+            <label>
+              <span>Asset No.</span>
+              <input id="assetNumber" name="assetNumber" type="text">
+            </label>
+
+            <label>
+              <span>Qty</span>
+              <input id="quantity" name="quantity" type="number" min="0" step="1">
+            </label>
+
+            <label>
+              <span>Tech</span>
+              <input id="tech" name="tech" type="text">
+            </label>
+
+            <label>
+              <span>Status</span>
+              <select id="status" name="status">
+                <option value="">Select status</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Waiting">Waiting</option>
+                <option value="Inspection">Inspection</option>
+                <option value="Complete">Complete</option>
+                <option value="Dispatched">Dispatched</option>
+              </select>
+            </label>
+
+            <label class="wide-field">
+              <span>Notes</span>
+              <textarea id="notes" name="notes" rows="3"></textarea>
+            </label>
+
+            <label>
+              <span>PO Number</span>
+              <input id="poNumber" name="poNumber" type="text">
+            </label>
+
+            <label>
+              <span>Start Date</span>
+              <input id="startDate" name="startDate" type="date">
+            </label>
+
+            <label>
+              <span>Insp Date</span>
+              <input id="inspectionDate" name="inspectionDate" type="date">
+            </label>
+
+            <label>
+              <span>Disp Date</span>
+              <input id="dispatchDate" name="dispatchDate" type="date">
+            </label>
+
+            <label>
+              <span>Doc No.</span>
+              <input id="docNumber" name="docNumber" type="text">
+            </label>
+
+            <label>
+              <span>Ship Due</span>
+              <input id="shipDue" name="shipDue" type="date">
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button id="save-button" class="primary-button" type="submit">Add to Schedule</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="schedule-page" class="page" aria-labelledby="schedule-heading">
+        <div class="page-heading">
+          <div>
+            <h2 id="schedule-heading">Scheduling Programme</h2>
+            <p>Rows entered on the input data page appear here in the same order.</p>
+          </div>
+          <div class="schedule-actions">
+            <button id="export-button" class="secondary-button" type="button">Export CSV</button>
+            <button id="clear-schedule-button" class="danger-button" type="button">Clear Schedule</button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="schedule-table">
+            <thead>
+              <tr id="schedule-header-row"></tr>
+            </thead>
+            <tbody id="schedule-table-body"></tbody>
+          </table>
+        </div>
+        <p id="empty-message" class="empty-message">No schedule rows yet. Add a job on the input data page.</p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
