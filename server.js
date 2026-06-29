@@ -1,0 +1,398 @@
+const crypto = require("node:crypto");
+const fs = require("node:fs/promises");
+const http = require("node:http");
+const path = require("node:path");
+const { URL } = require("node:url");
+const nodemailer = require("nodemailer");
+
+const ROOT = __dirname;
+const PORT = Number(process.env.PORT || 3000);
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "luke@horizon-wiring.co.uk").toLowerCase();
+const DATA_FILE = process.env.AUTH_DATA_FILE || path.join(ROOT, ".data", "auth.json");
+const SESSION_COOKIE = "hwplanner_session";
+const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
+const RESET_TTL_MS = 60 * 60 * 1000;
+
+const PUBLIC_FILES = new Set([
+  "/auth.js",
+  "/login.html",
+  "/reset-password.html",
+  "/styles.css",
+]);
+
+const MIME_TYPES = {
+  ".css": "text/css; charset=utf-8",
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+};
+
+const sessions = new Map();
+
+async function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
+  const hash = await new Promise((resolve, reject) => {
+    crypto.scrypt(password, salt, 64, (error, derivedKey) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve(derivedKey.toString("hex"));
+    });
+  });
+
+  return { salt, hash };
+}
+
+async function verifyPassword(password, savedHash) {
+  if (!savedHash?.salt || !savedHash?.hash) {
+    return false;
+  }
+
+  const candidate = await hashPassword(password, savedHash.salt);
+  return crypto.timingSafeEqual(
+    Buffer.from(candidate.hash, "hex"),
+    Buffer.from(savedHash.hash, "hex"),
+  );
+}
+
+function hashToken(token) {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
+async function readAuthData() {
+  try {
+    const data = JSON.parse(await fs.readFile(DATA_FILE, "utf8"));
+    data.adminEmail = (data.adminEmail || ADMIN_EMAIL).toLowerCase();
+    return data;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+
+    const initialData = {
+      adminEmail: ADMIN_EMAIL,
+      passwordHash: process.env.ADMIN_PASSWORD
+        ? await hashPassword(process.env.ADMIN_PASSWORD)
+        : null,
+      reset: null,
+    };
+
+    await writeAuthData(initialData);
+    if (!process.env.ADMIN_PASSWORD) {
+      console.warn(
+        `Admin account ${ADMIN_EMAIL} created without a password. Use the forgot-password flow to set one.`,
+      );
+    }
+
+    return initialData;
+  }
+}
+
+async function writeAuthData(data) {
+  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
+  await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+function parseCookies(request) {
+  return Object.fromEntries(
+    (request.headers.cookie || "")
+      .split(";")
+      .map((cookie) => cookie.trim())
+      .filter(Boolean)
+      .map((cookie) => {
+        const index = cookie.indexOf("=");
+        return [
+          decodeURIComponent(cookie.slice(0, index)),
+          decodeURIComponent(cookie.slice(index + 1)),
+        ];
+      }),
+  );
+}
+
+function getSession(request) {
+  const token = parseCookies(request)[SESSION_COOKIE];
+  const session = token ? sessions.get(token) : null;
+
+  if (!session) {
+    return null;
+  }
+
+  if (session.expiresAt <= Date.now()) {
+    sessions.delete(token);
+    return null;
+  }
+
+  return { token, ...session };
+}
+
+function createSession(email) {
+  const token = crypto.randomBytes(32).toString("hex");
+  sessions.set(token, {
+    email,
+    expiresAt: Date.now() + SESSION_TTL_MS,
+  });
+  return token;
+}
+
+function sessionCookie(token) {
+  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  return `${SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${Math.floor(
+    SESSION_TTL_MS / 1000,
+  )}${secure}`;
+}
+
+function clearSessionCookie() {
+  return `${SESSION_COOKIE}=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0`;
+}
+
+async function readJsonBody(request) {
+  const chunks = [];
+  for await (const chunk of request) {
+    chunks.push(chunk);
+  }
+
+  if (!chunks.length) {
+    return {};
+  }
+
+  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+}
+
+function sendJson(response, statusCode, body, headers = {}) {
+  response.writeHead(statusCode, {
+    "Content-Type": "application/json; charset=utf-8",
+    ...headers,
+  });
+  response.end(JSON.stringify(body));
+}
+
+function redirect(response, location) {
+  response.writeHead(302, { Location: location });
+  response.end();
+}
+
+function notFound(response) {
+  response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+  response.end("Not found");
+}
+
+function originFor(request) {
+  const protocol =
+    request.headers["x-forwarded-proto"] ||
+    (process.env.NODE_ENV === "production" ? "https" : "http");
+  return `${protocol}://${request.headers.host}`;
+}
+
+function isSmtpConfigured() {
+  return Boolean(process.env.SMTP_HOST && process.env.SMTP_PORT);
+}
+
+async function sendResetEmail(email, resetLink) {
+  if (!isSmtpConfigured()) {
+    console.warn(`Password reset link for ${email}: ${resetLink}`);
+    return false;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure:
+      process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465,
+    auth:
+      process.env.SMTP_USER && process.env.SMTP_PASS
+        ? {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          }
+        : undefined,
+  });
+
+  await transporter.sendMail({
+    from:
+      process.env.SMTP_FROM ||
+      process.env.SMTP_USER ||
+      "HWPlanner <no-reply@horizon-wiring.co.uk>",
+    to: email,
+    subject: "Reset your HWPlanner password",
+    text: `Use this one-hour link to reset your HWPlanner password: ${resetLink}`,
+    html: `
+      <p>Use this one-hour link to reset your HWPlanner password:</p>
+      <p><a href="${resetLink}">${resetLink}</a></p>
+      <p>If you did not request this, you can ignore this email.</p>
+    `,
+  });
+
+  return true;
+}
+
+async function serveFile(response, filePath) {
+  const extension = path.extname(filePath);
+  const contents = await fs.readFile(filePath);
+  response.writeHead(200, {
+    "Content-Type": MIME_TYPES[extension] || "application/octet-stream",
+  });
+  response.end(contents);
+}
+
+async function handleApi(request, response, pathname) {
+  if (request.method === "GET" && pathname === "/api/session") {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { authenticated: false });
+      return;
+    }
+
+    sendJson(response, 200, { authenticated: true, email: session.email });
+    return;
+  }
+
+  if (request.method === "POST" && pathname === "/api/login") {
+    const body = await readJsonBody(request);
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+    const authData = await readAuthData();
+    const isValid =
+      email === authData.adminEmail &&
+      (await verifyPassword(password, authData.passwordHash));
+
+    if (!isValid) {
+      sendJson(response, 401, {
+        message: "Invalid email or password.",
+      });
+      return;
+    }
+
+    const token = createSession(email);
+    sendJson(
+      response,
+      200,
+      { message: "Signed in successfully." },
+      { "Set-Cookie": sessionCookie(token) },
+    );
+    return;
+  }
+
+  if (request.method === "POST" && pathname === "/api/logout") {
+    const session = getSession(request);
+    if (session) {
+      sessions.delete(session.token);
+    }
+
+    sendJson(
+      response,
+      200,
+      { message: "Signed out successfully." },
+      { "Set-Cookie": clearSessionCookie() },
+    );
+    return;
+  }
+
+  if (request.method === "POST" && pathname === "/api/forgot-password") {
+    const body = await readJsonBody(request);
+    const email = String(body.email || "").trim().toLowerCase();
+    const authData = await readAuthData();
+    let resetLink = null;
+    let emailSent = false;
+
+    if (email === authData.adminEmail) {
+      const token = crypto.randomBytes(32).toString("hex");
+      authData.reset = {
+        tokenHash: hashToken(token),
+        expiresAt: Date.now() + RESET_TTL_MS,
+      };
+      await writeAuthData(authData);
+
+      resetLink = `${originFor(request)}/reset-password.html?token=${encodeURIComponent(
+        token,
+      )}`;
+
+      try {
+        emailSent = await sendResetEmail(email, resetLink);
+      } catch (error) {
+        console.error("Failed to send password reset email:", error);
+      }
+    }
+
+    sendJson(response, 202, {
+      message:
+        "If that admin account exists, a password reset email will be sent shortly.",
+      resetLink:
+        !emailSent && process.env.NODE_ENV !== "production" ? resetLink : undefined,
+    });
+    return;
+  }
+
+  if (request.method === "POST" && pathname === "/api/reset-password") {
+    const body = await readJsonBody(request);
+    const token = String(body.token || "");
+    const password = String(body.password || "");
+    const authData = await readAuthData();
+
+    if (password.length < 10) {
+      sendJson(response, 400, {
+        message: "Please choose a password with at least 10 characters.",
+      });
+      return;
+    }
+
+    const reset = authData.reset;
+    const isTokenValid =
+      reset?.tokenHash &&
+      reset.expiresAt > Date.now() &&
+      crypto.timingSafeEqual(
+        Buffer.from(reset.tokenHash, "hex"),
+        Buffer.from(hashToken(token), "hex"),
+      );
+
+    if (!isTokenValid) {
+      sendJson(response, 400, {
+        message: "This reset link is invalid or has expired.",
+      });
+      return;
+    }
+
+    authData.passwordHash = await hashPassword(password);
+    authData.reset = null;
+    await writeAuthData(authData);
+    sessions.clear();
+
+    sendJson(response, 200, {
+      message: "Password updated. Please sign in with your new password.",
+    });
+    return;
+  }
+
+  notFound(response);
+}
+
+async function handleRequest(request, response) {
+  try {
+    const requestUrl = new URL(request.url, originFor(request));
+    const pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+
+    if (pathname.startsWith("/api/")) {
+      await handleApi(request, response, pathname);
+      return;
+    }
+
+    if (pathname === "/index.html" && !getSession(request)) {
+      redirect(response, `/login.html?next=${encodeURIComponent("/")}`);
+      return;
+    }
+
+    if (pathname === "/index.html" || PUBLIC_FILES.has(pathname)) {
+      await serveFile(response, path.join(ROOT, pathname));
+      return;
+    }
+
+    notFound(response);
+  } catch (error) {
+    console.error(error);
+    sendJson(response, 500, { message: "Something went wrong." });
+  }
+}
+
+http.createServer(handleRequest).listen(PORT, () => {
+  console.log(`HWPlanner server running at http://localhost:${PORT}`);
+  console.log(`Admin account: ${ADMIN_EMAIL}`);
+});

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | HWPlanner</title>
+    <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://horizon-wiring.co.uk">
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth.js" defer></script>
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-panel" aria-labelledby="login-title">
+        <a class="brand auth-brand" href="/login.html" aria-label="HWPlanner login">
+          <img
+            class="brand-logo brand-logo-white"
+            src="https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/images/Logo-White.ef0dd9d122b5d81fa8b78d5b9a4e5ef3.svg"
+            alt="Horizon Wiring"
+          >
+          <span class="brand-tag">Planner</span>
+        </a>
+
+        <div class="auth-card">
+          <p class="eyebrow">Admin access</p>
+          <h1 id="login-title">Sign in to enter HWPlanner.</h1>
+          <p class="auth-copy">
+            Use the Horizon Wiring admin account to access the planning site.
+          </p>
+
+          <form class="auth-form" id="login-form">
+            <label for="login-email">Email address</label>
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              value="luke@horizon-wiring.co.uk"
+              required
+            >
+
+            <label for="login-password">Password</label>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            >
+
+            <button class="button button-primary" type="submit">Sign in</button>
+            <p class="form-message" id="login-message" role="status"></p>
+          </form>
+
+          <button class="auth-text-button" id="forgot-toggle" type="button">
+            Forgotten your password?
+          </button>
+
+          <form class="auth-form auth-form-hidden" id="forgot-form">
+            <label for="forgot-email">Email reset link to</label>
+            <input
+              id="forgot-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              value="luke@horizon-wiring.co.uk"
+              required
+            >
+            <button class="button button-ghost" type="submit">Email reset link</button>
+            <p class="form-message" id="forgot-message" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
