@@ -45,3 +45,18 @@ Optional environment variables:
 - `PORT` - defaults to `3000`
 
 In local development without SMTP, reset links are printed in the server logs.
+
+## Staff accounts
+
+The weekly planner includes a staff section for adding:
+
+- Staff name
+- Working hours
+- Role: `Management`, `Lead`, or `Tech`
+- Staff rating from 1 to 5
+- Competence level
+- Login email and password
+
+Adding a staff member creates a server-side login account for that email. Staff
+members can sign in through the same login page and can use the forgot-password
+flow if SMTP is configured.
