@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HWPlanner | Weekly Production Planner</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main>
+      <section id="login-view" class="login-shell" aria-labelledby="login-title">
+        <div class="login-card">
+          <p class="eyebrow">HWPlanner</p>
+          <h1 id="login-title">Production planning, one week at a time.</h1>
+          <p class="muted">
+            Sign in to manage weekly project demand, staff capacity, and competence-based allocations.
+          </p>
+
+          <form id="login-form" class="stacked-form">
+            <label>
+              Email
+              <input id="login-email" name="email" type="email" autocomplete="email" value="planner@example.com" required>
+            </label>
+            <label>
+              Password
+              <input id="login-password" name="password" type="password" autocomplete="current-password" value="planner123" required>
+            </label>
+            <button type="submit" class="button primary">Log in</button>
+            <p id="login-error" class="form-error" role="alert" hidden></p>
+          </form>
+
+          <div class="demo-note">
+            Demo login: <strong>planner@example.com</strong> / <strong>planner123</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="app-view" class="app-shell" hidden>
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">Production Planner</p>
+            <h1>Weekly planning dashboard</h1>
+          </div>
+          <div class="header-actions">
+            <label class="week-picker">
+              Planning week
+              <input id="planning-week" type="week">
+            </label>
+            <button id="logout-button" type="button" class="button ghost">Log out</button>
+          </div>
+        </header>
+
+        <section class="summary-grid" aria-label="Weekly summary">
+          <article class="summary-card">
+            <span>Total project hours</span>
+            <strong id="summary-demand">0h</strong>
+          </article>
+          <article class="summary-card">
+            <span>Available staff hours</span>
+            <strong id="summary-capacity">0h</strong>
+          </article>
+          <article class="summary-card">
+            <span>Allocated hours</span>
+            <strong id="summary-allocated">0h</strong>
+          </article>
+          <article class="summary-card">
+            <span>Unallocated hours</span>
+            <strong id="summary-gap">0h</strong>
+          </article>
+        </section>
+
+        <div class="workspace-grid">
+          <section class="panel" aria-labelledby="projects-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Demand</p>
+                <h2 id="projects-title">Projects and hours</h2>
+              </div>
+              <button id="load-sample-projects" type="button" class="button secondary">Load sample projects</button>
+            </div>
+
+            <form id="project-form" class="entry-grid">
+              <label>
+                Project name
+                <input id="project-name" type="text" placeholder="Packaging redesign" required>
+              </label>
+              <label>
+                Hours required
+                <input id="project-hours" type="number" min="0.5" step="0.5" placeholder="24" required>
+              </label>
+              <label>
+                Required competence
+                <select id="project-competence" required></select>
+              </label>
+              <label>
+                Week
+                <input id="project-week" type="week" required>
+              </label>
+              <button type="submit" class="button primary">Add project</button>
+            </form>
+
+            <div class="upload-box">
+              <div>
+                <h3>Upload projects CSV</h3>
+                <p class="muted">
+                  Use columns: <code>project</code>, <code>hours</code>, <code>competence</code>, <code>week</code>.
+                </p>
+              </div>
+              <label class="file-input">
+                <input id="project-upload" type="file" accept=".csv,text/csv">
+                Choose CSV
+              </label>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Week</th>
+                    <th>Hours</th>
+                    <th>Competence</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="projects-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="staff-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Capacity</p>
+                <h2 id="staff-title">Staff and competence</h2>
+              </div>
+              <button id="load-sample-staff" type="button" class="button secondary">Load sample staff</button>
+            </div>
+
+            <form id="staff-form" class="entry-grid">
+              <label>
+                Staff name
+                <input id="staff-name" type="text" placeholder="Alex Morgan" required>
+              </label>
+              <label>
+                Working hours
+                <input id="staff-hours" type="number" min="0.5" step="0.5" placeholder="37.5" required>
+              </label>
+              <label>
+                Competence level
+                <select id="staff-competence" required></select>
+              </label>
+              <button type="submit" class="button primary">Add staff</button>
+            </form>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Hours</th>
+                    <th>Competence</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="staff-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel planner-panel" aria-labelledby="planner-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Weekly view</p>
+              <h2 id="planner-title">Allocation plan</h2>
+            </div>
+            <button id="clear-data" type="button" class="button danger">Clear all data</button>
+          </div>
+
+          <div id="capacity-bars" class="capacity-bars" aria-label="Competence capacity"></div>
+          <div id="planner-empty" class="empty-state" hidden>
+            Add projects and staff, or load the sample data, to generate a weekly plan.
+          </div>
+          <div id="planner-output" class="planner-output"></div>
+        </section>
+      </section>
+    </main>
+
+    <template id="empty-row-template">
+      <tr>
+        <td colspan="5" class="empty-cell">No records yet.</td>
+      </tr>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
