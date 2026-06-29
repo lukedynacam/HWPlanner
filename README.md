@@ -1,8 +1,8 @@
 # HWPlanner
 
 A static landing page styled to match the Horizon Wiring brand direction:
-dark navigation, bold technical typography, electric-blue accents, large wiring
-imagery, alternating content sections, and a compact contact footer.
+dark-grey navigation, Gilroy typography, bright yellow accents, large wiring
+imagery, alternating content sections, and a yellow contact footer.
 
 ## Local preview
 
