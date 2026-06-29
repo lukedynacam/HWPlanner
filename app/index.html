@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HWPlanner Scheduling Programme</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="/auth.js" defer></script>
   </head>
   <body>
     <header class="app-header">
@@ -13,8 +14,10 @@
         <p>Input data and scheduling programme</p>
       </div>
       <nav aria-label="Primary navigation">
+        <a class="nav-link" href="/">Site Home</a>
         <button class="nav-button active" type="button" data-page-target="input-page">Input Data</button>
         <button class="nav-button" type="button" data-page-target="schedule-page">Scheduling Programme</button>
+        <button class="nav-button" id="logout-button" type="button">Sign out</button>
       </nav>
     </header>
 

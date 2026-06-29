@@ -20,6 +20,13 @@ const PUBLIC_FILES = new Set([
   "/styles.css",
 ]);
 
+const PROTECTED_FILES = new Set([
+  "/app/app.js",
+  "/app/index.html",
+  "/app/styles.css",
+  "/index.html",
+]);
+
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -368,19 +375,28 @@ async function handleApi(request, response, pathname) {
 async function handleRequest(request, response) {
   try {
     const requestUrl = new URL(request.url, originFor(request));
-    const pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+    let pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+    if (pathname === "/app" || pathname === "/app/") {
+      pathname = "/app/index.html";
+    }
 
     if (pathname.startsWith("/api/")) {
       await handleApi(request, response, pathname);
       return;
     }
 
-    if (pathname === "/index.html" && !getSession(request)) {
-      redirect(response, `/login.html?next=${encodeURIComponent("/")}`);
+    if (PROTECTED_FILES.has(pathname) && !getSession(request)) {
+      if (path.extname(pathname) === ".html") {
+        const next = pathname === "/index.html" ? "/" : pathname;
+        redirect(response, `/login.html?next=${encodeURIComponent(next)}`);
+        return;
+      }
+
+      sendJson(response, 401, { message: "Authentication required." });
       return;
     }
 
-    if (pathname === "/index.html" || PUBLIC_FILES.has(pathname)) {
+    if (PROTECTED_FILES.has(pathname) || PUBLIC_FILES.has(pathname)) {
       await serveFile(response, path.join(ROOT, pathname));
       return;
     }
