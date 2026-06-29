@@ -1,10 +1,8 @@
 # HWPlanner
 
-A static landing page styled to match the Horizon Wiring brand direction:
-dark-grey navigation, Gilroy typography, bright yellow accents, large wiring
-imagery, alternating content sections, and a yellow contact footer.
+HWPlanner is a dependency-free weekly production planner prototype. It lets a planner log in, add project demand, enter staff capacity and competence levels, and view an automatically generated weekly allocation plan.
 
-## Local preview
+## Run locally
 
 Install dependencies, then start the authenticated site:
 
