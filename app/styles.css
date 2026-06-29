@@ -83,6 +83,7 @@ main {
   margin-top: 6px;
 }
 
+.nav-link,
 .nav-button,
 .primary-button,
 .secondary-button,
@@ -93,6 +94,11 @@ main {
   padding: 10px 14px;
 }
 
+.nav-link {
+  text-decoration: none;
+}
+
+.nav-link,
 .nav-button,
 .secondary-button {
   background: var(--white);

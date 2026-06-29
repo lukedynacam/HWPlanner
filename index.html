@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HWPlanner | Weekly Production Planner</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="auth.js" defer></script>
   </head>
   <body>
     <main>
@@ -16,21 +17,29 @@
             Sign in to manage weekly project demand, staff capacity, and competence-based allocations.
           </p>
 
-          <form id="login-form" class="stacked-form">
-            <label>
-              Email
-              <input id="login-email" name="email" type="email" autocomplete="email" value="planner@example.com" required>
-            </label>
-            <label>
-              Password
-              <input id="login-password" name="password" type="password" autocomplete="current-password" value="planner123" required>
-            </label>
-            <button type="submit" class="button primary">Log in</button>
-            <p id="login-error" class="form-error" role="alert" hidden></p>
-          </form>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#why">Why Choose Us</a>
+        <a href="#contact">Contact</a>
+        <a href="/app/">Planner App</a>
+        <button class="logout-button" id="logout-button" type="button">Sign out</button>
+      </nav>
+    </header>
 
-          <div class="demo-note">
-            Demo login: <strong>planner@example.com</strong> / <strong>planner123</strong>
+    <main id="top">
+      <section class="hero">
+        <div class="hero-overlay">
+          <p class="eyebrow">Motorsport and marine wiring planning</p>
+          <h1>Precision planning for complex wiring projects.</h1>
+          <p class="hero-copy">
+            HWPlanner gives technical teams a clean, focused workspace for
+            planning harnesses, tracking work, and keeping quality visible from
+            first brief to final test.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/app/">Open Planner</a>
+            <a class="button button-ghost" href="#contact">Start a Project</a>
           </div>
         </div>
       </section>

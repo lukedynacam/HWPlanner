@@ -4,35 +4,44 @@ HWPlanner is a dependency-free weekly production planner prototype. It lets a pl
 
 ## Run locally
 
-Open `index.html` in a browser, or serve the folder with any static file server:
+Install dependencies, then start the authenticated site:
 
 ```bash
-python3 -m http.server 4173
+npm install
+ADMIN_PASSWORD='replace-with-a-strong-password' npm start
 ```
 
-Then visit `http://localhost:4173`.
+Then open `http://localhost:3000`.
 
-## Demo login
+## Admin login
 
-- Email: `planner@example.com`
-- Password: `planner123`
+The admin account is:
 
-The demo uses browser local storage for the login session and planning data. It is intended as a front-end prototype, not a production authentication system.
+```text
+luke@horizon-wiring.co.uk
+```
 
-## Planner features
+Set `ADMIN_PASSWORD` before the first server run to create the initial password.
+If no password is configured, the account is created without one and the
+forgot-password flow can be used to set it.
 
-- Weekly planning view using an ISO week picker.
-- Manual project entry with project name, required hours, required competence level, and week.
-- CSV project upload with columns:
+## Forgot password email setup
 
-  ```csv
-  project,hours,competence,week
-  Retail display build,46,2,2026-W27
-  Prototype assembly,32,4,2026-W27
-  ```
+Password reset emails are sent through SMTP. Configure these environment
+variables in production:
 
-- Manual staff entry with name, working hours, and competence level.
-- Competence levels from Level 1 - Basic through Level 4 - Expert.
-- Automatic weekly allocation that assigns project hours only to staff at or above the required competence level.
-- Summary cards for demand, capacity, allocated hours, and unallocated gaps.
-- Sample data buttons for quick evaluation.
+```bash
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your-smtp-user
+SMTP_PASS=your-smtp-password
+SMTP_FROM='HWPlanner <no-reply@horizon-wiring.co.uk>'
+```
+
+Optional environment variables:
+
+- `ADMIN_EMAIL` - defaults to `luke@horizon-wiring.co.uk`
+- `AUTH_DATA_FILE` - defaults to `.data/auth.json`
+- `PORT` - defaults to `3000`
+
+In local development without SMTP, reset links are printed in the server logs.
