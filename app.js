@@ -1,10 +1,4 @@
 const STORAGE_KEY = "hwplanner.productionPlanner.v1";
-const SESSION_KEY = "hwplanner.session.v1";
-
-const DEMO_USER = {
-  email: "planner@example.com",
-  password: "planner123",
-};
 
 const COMPETENCE_LEVELS = [
   { value: 1, label: "Level 1 - Basic" },
@@ -30,13 +24,7 @@ const SAMPLE_STAFF = [
 const state = loadState();
 
 const elements = {
-  loginView: document.querySelector("#login-view"),
   appView: document.querySelector("#app-view"),
-  loginForm: document.querySelector("#login-form"),
-  loginEmail: document.querySelector("#login-email"),
-  loginPassword: document.querySelector("#login-password"),
-  loginError: document.querySelector("#login-error"),
-  logoutButton: document.querySelector("#logout-button"),
   planningWeek: document.querySelector("#planning-week"),
   projectForm: document.querySelector("#project-form"),
   projectName: document.querySelector("#project-name"),
@@ -76,7 +64,6 @@ function initialise() {
 
   elements.planningWeek.value = state.selectedWeek;
   elements.projectWeek.value = state.selectedWeek;
-  toggleAuthenticated(Boolean(localStorage.getItem(SESSION_KEY)));
   render();
 }
 
@@ -94,8 +81,6 @@ function populateCompetenceOptions() {
 }
 
 function bindEvents() {
-  elements.loginForm.addEventListener("submit", handleLogin);
-  elements.logoutButton.addEventListener("click", handleLogout);
   elements.planningWeek.addEventListener("change", handleWeekChange);
   elements.projectForm.addEventListener("submit", handleProjectSubmit);
   elements.staffForm.addEventListener("submit", handleStaffSubmit);
@@ -105,33 +90,6 @@ function bindEvents() {
   elements.loadSampleProjects.addEventListener("click", addSampleProjects);
   elements.loadSampleStaff.addEventListener("click", addSampleStaff);
   elements.clearData.addEventListener("click", clearAllData);
-}
-
-function handleLogin(event) {
-  event.preventDefault();
-  const email = elements.loginEmail.value.trim().toLowerCase();
-  const password = elements.loginPassword.value;
-
-  if (email === DEMO_USER.email && password === DEMO_USER.password) {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ email, loggedInAt: new Date().toISOString() }));
-    elements.loginError.hidden = true;
-    elements.loginError.textContent = "";
-    toggleAuthenticated(true);
-    return;
-  }
-
-  elements.loginError.textContent = "Use the demo credentials to access the planner.";
-  elements.loginError.hidden = false;
-}
-
-function handleLogout() {
-  localStorage.removeItem(SESSION_KEY);
-  toggleAuthenticated(false);
-}
-
-function toggleAuthenticated(isAuthenticated) {
-  elements.loginView.hidden = isAuthenticated;
-  elements.appView.hidden = !isAuthenticated;
 }
 
 function handleWeekChange() {

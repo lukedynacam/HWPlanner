@@ -1,13 +1,29 @@
+@font-face {
+  font-family: "GilroyBold";
+  src: url("https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/01bee9655bf434da91a4f4f5eed32339.otf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "GilroyLight";
+  src: url("https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/d90fa984926d3745c7e68bc525692c26.otf") format("opentype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 300;
+}
+
 :root {
-  --background: #f5f7f8;
-  --border: #c9d3d1;
-  --danger: #aa2e25;
-  --danger-hover: #8f251e;
-  --header: #c6d0cc;
-  --primary: #2f6f5e;
-  --primary-hover: #25594b;
-  --text: #1f2b2a;
-  --white: #ffffff;
+  --horizon-grey: #313133;
+  --horizon-grey-light: #707070;
+  --horizon-yellow: #ffe600;
+  --horizon-white: #fff;
+  --horizon-off-white: #f8f8f8;
+  --horizon-border: rgba(49, 49, 51, 0.16);
+  --danger: #9d1d1d;
+  --danger-hover: #7f1717;
+  --shadow: 0 22px 62px rgba(17, 17, 18, 0.16);
 }
 
 * {
@@ -15,10 +31,14 @@
 }
 
 body {
+  min-height: 100vh;
   margin: 0;
-  background: var(--background);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--horizon-grey);
+  background:
+    linear-gradient(rgba(248, 248, 248, 0.94), rgba(248, 248, 248, 0.94)),
+    url("https://horizon-wiring.co.uk/wp-content/uploads/new-sean.6526d8a5c93d0.jpg") center/cover fixed;
+  font-family: "GilroyLight", Arial, sans-serif;
+  letter-spacing: 1px;
 }
 
 button,
@@ -29,32 +49,76 @@ textarea {
 }
 
 .app-header {
+  display: grid;
+  grid-template-columns: auto minmax(240px, 1fr) auto;
+  gap: clamp(1rem, 3vw, 2rem);
   align-items: center;
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 24px;
-  justify-content: space-between;
-  padding: 20px 28px;
+  padding: clamp(1rem, 2.6vw, 1.65rem) clamp(1rem, 3vw, 2rem);
+  color: var(--horizon-white);
+  background: var(--horizon-grey);
+  box-shadow: var(--shadow);
 }
 
-.app-header h1,
-.app-header p {
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-logo {
+  width: clamp(180px, 20vw, 227px);
+}
+
+.brand-tag {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 14px;
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.page-title h1,
+.page-title p {
   margin: 0;
 }
 
-.app-header p {
-  color: #52615f;
-  margin-top: 4px;
+.page-title h1 {
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 3rem);
+  line-height: 1.05;
+}
+
+.eyebrow {
+  color: var(--horizon-yellow);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+nav,
+.form-actions,
+.schedule-actions,
+.row-actions {
+  display: flex;
+  gap: 10px;
 }
 
 nav {
-  display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 main {
-  padding: 28px;
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .page {
@@ -66,11 +130,16 @@ main {
 }
 
 .page-heading {
-  align-items: flex-start;
   display: flex;
-  gap: 16px;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 16px;
   margin-bottom: 20px;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  color: var(--horizon-grey);
+  background: var(--horizon-white);
+  border-top: 8px solid var(--horizon-yellow);
+  box-shadow: 0 10px 28px rgba(17, 17, 18, 0.08);
 }
 
 .page-heading h2,
@@ -78,20 +147,49 @@ main {
   margin: 0;
 }
 
+.page-heading h2 {
+  position: relative;
+  padding-bottom: 0.82rem;
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.page-heading h2::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 62px;
+  height: 4px;
+  content: "";
+  background: var(--horizon-yellow);
+}
+
 .page-heading p {
-  color: #52615f;
-  margin-top: 6px;
+  margin-top: 0.8rem;
+  color: var(--horizon-grey-light);
 }
 
 .nav-link,
 .nav-button,
 .primary-button,
 .secondary-button,
-.danger-button {
-  border: 1px solid transparent;
-  border-radius: 6px;
+.danger-button,
+.row-actions button {
+  min-height: 2.65rem;
+  padding: 0.7rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 0;
   cursor: pointer;
-  padding: 10px 14px;
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .nav-link {
@@ -101,66 +199,95 @@ main {
 .nav-link,
 .nav-button,
 .secondary-button {
-  background: var(--white);
-  border-color: var(--border);
-  color: var(--text);
+  color: var(--horizon-white);
+  background: transparent;
+  border-color: var(--horizon-yellow);
 }
 
-.nav-button.active,
+.nav-link:hover,
+.nav-button:hover,
+.secondary-button:hover,
+.nav-button.active {
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+}
+
 .primary-button {
-  background: var(--primary);
-  color: var(--white);
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
 }
 
-.primary-button:hover,
-.nav-button.active:hover {
-  background: var(--primary-hover);
+.primary-button:hover {
+  color: var(--horizon-white);
+  background: var(--horizon-grey);
+  border-color: var(--horizon-yellow);
 }
 
-.secondary-button:hover {
-  background: #eef3f1;
+.page-heading .secondary-button,
+.schedule-actions .secondary-button {
+  color: var(--horizon-grey);
+  background: var(--horizon-white);
 }
 
 .danger-button {
+  color: var(--horizon-white);
   background: var(--danger);
-  color: var(--white);
 }
 
 .danger-button:hover {
   background: var(--danger-hover);
 }
 
+.input-form,
+.table-wrapper {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--horizon-border);
+  box-shadow: 0 10px 28px rgba(17, 17, 18, 0.08);
+}
+
 .input-form {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
+  padding: clamp(1rem, 2vw, 1.35rem);
 }
 
 .form-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
 
 label span {
-  font-weight: 700;
+  color: var(--horizon-grey);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 input,
 select,
 textarea {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  min-height: 40px;
-  padding: 8px 10px;
   width: 100%;
+  min-height: 2.7rem;
+  padding: 0.7rem 0.8rem;
+  color: var(--horizon-grey);
+  background: var(--horizon-off-white);
+  border: 2px solid transparent;
+  border-bottom-color: var(--horizon-grey);
+  border-radius: 0;
+  outline: 0;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: var(--horizon-white);
+  border-color: var(--horizon-yellow);
 }
 
 textarea {
@@ -172,94 +299,89 @@ textarea {
   grid-column: span 2;
 }
 
-.form-actions,
-.schedule-actions {
-  display: flex;
-  gap: 10px;
-}
-
 .form-actions {
   justify-content: flex-end;
   margin-top: 18px;
 }
 
 .table-wrapper {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
   overflow-x: auto;
 }
 
 table {
-  border-collapse: collapse;
-  min-width: 1600px;
   width: 100%;
+  min-width: 1600px;
+  border-collapse: collapse;
 }
 
 th,
 td {
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  padding: 8px;
+  padding: 0.82rem 0.6rem;
+  border-right: 1px solid var(--horizon-border);
+  border-bottom: 1px solid var(--horizon-border);
   text-align: left;
   vertical-align: top;
 }
 
 th {
-  background: var(--header);
-  font-size: 13px;
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
 td {
-  background: var(--white);
+  background: var(--horizon-white);
   font-size: 14px;
 }
 
 tbody tr:hover td {
-  background: #f1f7f4;
-}
-
-.row-actions {
-  display: flex;
-  gap: 6px;
+  background: rgba(255, 230, 0, 0.12);
 }
 
 .row-actions button {
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 6px 8px;
+  min-height: 2rem;
+  padding: 0.35rem 0.6rem;
 }
 
 .edit-row-button {
-  background: #edf5ff;
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
 }
 
 .delete-row-button {
-  background: #fff0ee;
   color: var(--danger);
+  background: #f7dfdf;
 }
 
 .empty-message {
-  color: #52615f;
+  color: var(--horizon-grey-light);
   margin: 14px 0 0;
 }
 
+@media (max-width: 980px) {
+  .app-header {
+    grid-template-columns: 1fr;
+  }
+
+  nav {
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 760px) {
-  .app-header,
-  .page-heading {
+  .page-heading,
+  .schedule-actions {
     align-items: stretch;
     flex-direction: column;
   }
 
   nav,
   .schedule-actions {
-    flex-direction: column;
-  }
-
-  main {
-    padding: 18px;
+    display: grid;
   }
 
   .wide-field {
