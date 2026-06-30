@@ -50,9 +50,9 @@ textarea {
 
 .app-header {
   display: grid;
-  grid-template-columns: auto minmax(240px, 1fr) auto;
-  gap: clamp(1rem, 3vw, 2rem);
-  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(0.9rem, 2vw, 1.4rem) clamp(1rem, 3vw, 2rem);
+  align-items: start;
   padding: clamp(1rem, 2.6vw, 1.65rem) clamp(1rem, 3vw, 2rem);
   color: var(--horizon-white);
   background: var(--horizon-grey);
@@ -63,10 +63,13 @@ textarea {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .brand-logo {
-  width: clamp(180px, 20vw, 227px);
+  width: clamp(160px, 17vw, 220px);
+  max-width: 100%;
 }
 
 .brand-tag {
@@ -90,8 +93,10 @@ textarea {
 
 .page-title h1 {
   font-family: "GilroyBold", Arial, sans-serif;
-  font-size: clamp(1.6rem, 3.4vw, 3rem);
-  line-height: 1.05;
+  font-size: clamp(1.7rem, 3vw, 2.75rem);
+  line-height: 1.08;
+  max-width: 18ch;
+  overflow-wrap: anywhere;
 }
 
 .eyebrow {
@@ -111,8 +116,11 @@ nav,
 }
 
 nav {
+  grid-column: 1 / -1;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 main {
@@ -438,6 +446,10 @@ tbody tr:hover td {
 @media (max-width: 980px) {
   .app-header {
     grid-template-columns: 1fr;
+  }
+
+  .page-title h1 {
+    max-width: none;
   }
 
   .schedule-toolbar {
