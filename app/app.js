@@ -2,6 +2,7 @@
   "use strict";
 
   var storageKey = "hwplanner.scheduleRows";
+  var importedRowsKey = "hwplanner.scheduleRows.importedVersion";
 
   var fields = [
     { key: "customer", label: "Customer" },
@@ -36,6 +37,7 @@
   var pages = document.querySelectorAll(".page");
 
   function loadRows() {
+    seedImportedRows();
     var storedRows = window.localStorage.getItem(storageKey);
 
     if (!storedRows) {
@@ -52,6 +54,39 @@
 
   function saveRows(rows) {
     window.localStorage.setItem(storageKey, JSON.stringify(rows));
+  }
+
+  function seedImportedRows() {
+    var importedRows = window.HWPLANNER_IMPORTED_SCHEDULE_ROWS || [];
+    var importedVersion = window.HWPLANNER_IMPORTED_SCHEDULE_VERSION || "";
+
+    if (!importedRows.length || !importedVersion) {
+      return;
+    }
+
+    if (window.localStorage.getItem(importedRowsKey) === importedVersion) {
+      return;
+    }
+
+    var existingRows = [];
+    var storedRows = window.localStorage.getItem(storageKey);
+    if (storedRows) {
+      try {
+        existingRows = JSON.parse(storedRows);
+      } catch (error) {
+        console.error("Unable to merge imported schedule rows.", error);
+      }
+    }
+
+    var existingIds = new Set(existingRows.map(function (row) {
+      return row.id;
+    }));
+    var rowsToImport = importedRows.filter(function (row) {
+      return !existingIds.has(row.id);
+    });
+
+    saveRows(existingRows.concat(rowsToImport));
+    window.localStorage.setItem(importedRowsKey, importedVersion);
   }
 
   function makeId() {

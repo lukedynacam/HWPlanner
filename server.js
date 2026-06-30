@@ -23,6 +23,7 @@ const PUBLIC_FILES = new Set([
 const PROTECTED_FILES = new Set([
   "/app.js",
   "/app/app.js",
+  "/app/imported-schedule-rows.js",
   "/app/index.html",
   "/app/styles.css",
   "/index.html",
