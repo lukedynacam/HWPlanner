@@ -67,7 +67,7 @@ code {
 
 .app-header {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   gap: clamp(1rem, 3vw, 2rem);
   align-items: center;
   margin-bottom: 1.25rem;
@@ -75,6 +75,42 @@ code {
   color: var(--horizon-white);
   background: var(--horizon-grey);
   box-shadow: var(--shadow);
+}
+
+.top-page-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.top-page-nav a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.72rem 1.05rem;
+  color: var(--horizon-white);
+  background: transparent;
+  border: 2px solid var(--horizon-yellow);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.top-page-nav a:hover,
+.top-page-nav a:focus-visible,
+.top-page-nav a.active {
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+  transform: translateY(-1px);
 }
 
 .access-banner {
@@ -669,6 +705,7 @@ tbody tr:hover td {
   }
 
   .app-title-block,
+  .top-page-nav,
   .header-actions {
     grid-column: 1 / -1;
   }
@@ -678,6 +715,7 @@ tbody tr:hover td {
   .app-header,
   .panel-heading,
   .upload-box,
+  .top-page-nav,
   .access-banner,
   .header-actions {
     display: grid;

@@ -368,6 +368,11 @@
     });
   }
 
+  function pageFromHash() {
+    var hash = window.location.hash.replace("#", "");
+    return hash === "schedule-page" || hash === "input-page" ? hash : "input-page";
+  }
+
   function escapeCsv(value) {
     var stringValue = String(value || "");
 
@@ -403,8 +408,14 @@
 
   navButtons.forEach(function (button) {
     button.addEventListener("click", function () {
-      showPage(button.dataset.pageTarget);
+      var pageId = button.dataset.pageTarget;
+      showPage(pageId);
+      window.history.replaceState(null, "", "#" + pageId);
     });
+  });
+
+  window.addEventListener("hashchange", function () {
+    showPage(pageFromHash());
   });
 
   form.addEventListener("submit", upsertRow);
@@ -454,4 +465,5 @@
 
   buildHeader();
   renderRows();
+  showPage(pageFromHash());
 })();
