@@ -1,5 +1,5 @@
 {
-  "version": "staff_6d1b_2026-06-30",
+  "version": "staff_6d1b_2026-06-30_40h",
   "staff": [
     {
       "id": "imported-staff-001",
@@ -7,7 +7,7 @@
       "email": "ali@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -18,7 +18,7 @@
       "email": "ben@horizon-wiring.co.uk",
       "role": "Admin",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -29,7 +29,7 @@
       "email": "ben.porter@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -40,7 +40,7 @@
       "email": "callum@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -51,7 +51,7 @@
       "email": "cameron@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -62,7 +62,7 @@
       "email": "charlie@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -73,7 +73,7 @@
       "email": "charlotte@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -84,7 +84,7 @@
       "email": "craig@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -95,7 +95,7 @@
       "email": "ed.r@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -106,7 +106,7 @@
       "email": "ed@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -117,7 +117,7 @@
       "email": "ellis@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -128,7 +128,7 @@
       "email": "ethan@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -139,7 +139,7 @@
       "email": "harrison@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -150,7 +150,7 @@
       "email": "harry@horizon-wiring.co.uk",
       "role": "Management",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -161,7 +161,7 @@
       "email": "ian@horizon-wiring.co.uk",
       "role": "Inspection",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -172,7 +172,7 @@
       "email": "isaac@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -183,7 +183,7 @@
       "email": "jack@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -194,7 +194,7 @@
       "email": "jake@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -205,7 +205,7 @@
       "email": "james.a@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -216,7 +216,7 @@
       "email": "jerry@horizon-wiring.co.uk",
       "role": "Inspection",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -227,7 +227,7 @@
       "email": "josh.m@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -238,7 +238,7 @@
       "email": "josh@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -249,7 +249,7 @@
       "email": "karl@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -260,7 +260,7 @@
       "email": "kelvin@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -271,7 +271,7 @@
       "email": "kevin@horizon-wiring.co.uk",
       "role": "Inspection",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -282,7 +282,7 @@
       "email": "kiera@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -293,7 +293,7 @@
       "email": "laura@horizon-wiring.co.uk",
       "role": "Management",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -304,7 +304,7 @@
       "email": "leo@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -315,7 +315,7 @@
       "email": "liam@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -326,7 +326,7 @@
       "email": "luke@horizon-wiring.co.uk",
       "role": "Admin",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -337,7 +337,7 @@
       "email": "oliver@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -348,7 +348,7 @@
       "email": "oli@horizon-wiring.co.uk",
       "role": "Management",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -359,7 +359,7 @@
       "email": "ray@horizon-wiring.co.uk",
       "role": "Inspection",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -370,7 +370,7 @@
       "email": "richard@horizon-wiring.co.uk",
       "role": "Lead",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -381,7 +381,7 @@
       "email": "sean@horizon-wiring.co.uk",
       "role": "Admin",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -392,7 +392,7 @@
       "email": "sebastian@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -403,7 +403,7 @@
       "email": "simon@horizon-wiring.co.uk",
       "role": "Management",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -414,7 +414,7 @@
       "email": "toby@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -425,7 +425,7 @@
       "email": "tyler@horizon-wiring.co.uk",
       "role": "Tech",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
@@ -436,7 +436,7 @@
       "email": "victoria@horizon-wiring.co.uk",
       "role": "Management",
       "rating": 1,
-      "hoursPerWeek": 0,
+      "hoursPerWeek": 40,
       "blocked": true,
       "createdAt": "2026-06-30T00:00:00.000Z",
       "imported": true
