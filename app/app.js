@@ -182,7 +182,7 @@
     emptyMessage.hidden = rows.length > 0;
     emptyMessage.textContent = allRows.length
       ? "No schedule rows match the current filters."
-      : "No schedule rows yet. Add a job on the input data page.";
+      : "No schedule rows yet. Add a job on the New Project Entry page.";
 
     populateStatusFilter(allRows);
     updateFilterCount(rows.length, allRows.length);
