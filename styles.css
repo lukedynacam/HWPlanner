@@ -527,7 +527,29 @@ code {
 }
 
 .calendar-job-late {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(157, 29, 29, 0.16) 0,
+      rgba(157, 29, 29, 0.16) 8px,
+      rgba(255, 255, 255, 0.92) 8px,
+      rgba(255, 255, 255, 0.92) 16px
+    ) !important;
   border-left-color: var(--danger) !important;
+  outline: 2px solid rgba(157, 29, 29, 0.35);
+}
+
+.calendar-late-label {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 0.18rem;
+  padding: 0.12rem 0.28rem;
+  color: var(--horizon-white);
+  background: var(--danger);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 .calendar-job-manual {

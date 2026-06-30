@@ -372,6 +372,7 @@ function renderDayContent(dayNumber, dayPlan) {
       <strong>${job.customer || "Unknown customer"}</strong>
       <span>${job.partNumber || ""} ${job.description || ""}</span>
       <em>${formatHours(entry.hours)} | ships ${formatShipDate(entry.dueDate)}${entry.isManual ? " | moved" : ""}</em>
+      ${entry.isLate ? '<b class="calendar-late-label">Late - past ship date</b>' : ""}
     `;
     list.append(item);
   });
