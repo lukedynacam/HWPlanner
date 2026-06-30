@@ -29,7 +29,6 @@
   var recordIdInput = document.getElementById("record-id");
   var saveButton = document.getElementById("save-button");
   var clearFormButton = document.getElementById("clear-form-button");
-  var clearScheduleButton = document.getElementById("clear-schedule-button");
   var exportButton = document.getElementById("export-button");
   var headerRow = document.getElementById("schedule-header-row");
   var tableBody = document.getElementById("schedule-table-body");
@@ -490,13 +489,6 @@
 
   form.addEventListener("submit", upsertRow);
   clearFormButton.addEventListener("click", resetForm);
-  clearScheduleButton.addEventListener("click", function () {
-    if (window.confirm("Clear all schedule rows?")) {
-      saveRows([]);
-      resetForm();
-      renderRows();
-    }
-  });
   exportButton.addEventListener("click", exportCsv);
   headerRow.addEventListener("click", function (event) {
     var sortButton = event.target.closest("[data-sort-key]");
