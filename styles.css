@@ -457,6 +457,12 @@ code {
   background: var(--horizon-white);
 }
 
+.calendar-day-drop-target {
+  outline: 3px dashed var(--horizon-yellow);
+  outline-offset: -6px;
+  background: rgba(255, 230, 0, 0.12);
+}
+
 .calendar-day-empty {
   background: rgba(248, 248, 248, 0.72);
 }
@@ -496,6 +502,11 @@ code {
   padding: 0.42rem;
   background: rgba(255, 230, 0, 0.18);
   border-left: 4px solid var(--horizon-yellow);
+  cursor: grab;
+}
+
+.calendar-job-list li:active {
+  cursor: grabbing;
 }
 
 .calendar-job-list strong {
@@ -517,6 +528,10 @@ code {
 
 .calendar-job-late {
   border-left-color: var(--danger) !important;
+}
+
+.calendar-job-manual {
+  background: rgba(49, 49, 51, 0.08) !important;
 }
 
 .grade-hours-grid {

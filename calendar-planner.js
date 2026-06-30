@@ -1,5 +1,6 @@
 const SCHEDULE_STORAGE_KEY = "hwplanner.scheduleRows";
 const IMPORTED_ROWS_KEY = "hwplanner.scheduleRows.importedVersion";
+const CALENDAR_OVERRIDES_KEY = "hwplanner.calendarOverrides";
 
 const elements = {
   month: document.querySelector("#calendar-month"),
@@ -16,6 +17,22 @@ let staffCapacity = {
   totalDailyHours: 0,
   staffCount: 0,
 };
+
+function loadOverrides() {
+  try {
+    return JSON.parse(window.localStorage.getItem(CALENDAR_OVERRIDES_KEY) || "{}");
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveOverrides(overrides) {
+  window.localStorage.setItem(CALENDAR_OVERRIDES_KEY, JSON.stringify(overrides));
+}
+
+function rowKey(row) {
+  return row.id || `${row.customer}-${row.partNumber}-${row.jobCard}-${row.dispatchDate}`;
+}
 
 function seedImportedRows() {
   const importedRows = window.HWPLANNER_IMPORTED_SCHEDULE_ROWS || [];
@@ -142,6 +159,7 @@ function buildCapacityPlan(rows, startMonth) {
   const dailyCapacity = Number(staffCapacity.totalDailyHours || 0);
   const dayPlans = {};
   const scheduledRows = new Set();
+  const overrides = loadOverrides();
   let scheduledHours = 0;
 
   for (let date = new Date(startMonth); date <= endDate; date.setDate(date.getDate() + 1)) {
@@ -155,7 +173,12 @@ function buildCapacityPlan(rows, startMonth) {
   }
 
   const jobs = rows
-    .map((row) => ({ ...row, shippingDate: parseDate(row.dispatchDate), hoursValue: Number(row.hours || 0) }))
+    .map((row) => ({
+      ...row,
+      shippingDate: parseDate(row.dispatchDate),
+      plannedDate: parseDate(overrides[rowKey(row)]),
+      hoursValue: Number(row.hours || 0),
+    }))
     .filter((row) => row.shippingDate && row.shippingDate >= startMonth && row.shippingDate <= endDate)
     .sort((first, second) => {
       const dateDelta = first.shippingDate - second.shippingDate;
@@ -170,12 +193,30 @@ function buildCapacityPlan(rows, startMonth) {
 
   let workingDate = new Date(startMonth);
   jobs.forEach((job) => {
+    if (job.plannedDate && job.plannedDate >= startMonth && job.plannedDate <= endDate) {
+      const key = dateKey(job.plannedDate);
+      if (dayPlans[key]) {
+        const jobHours = Math.max(0, Number(job.hoursValue || 0));
+        dayPlans[key].used += jobHours;
+        dayPlans[key].jobs.push({
+          row: job,
+          hours: jobHours,
+          dueDate: job.shippingDate,
+          isLate: job.plannedDate > job.shippingDate,
+          isManual: true,
+        });
+        scheduledHours += jobHours;
+        scheduledRows.add(rowKey(job));
+      }
+      return;
+    }
+
     const jobHours = Math.max(0, Number(job.hoursValue || 0));
     if (!jobHours) {
       const key = dateKey(job.shippingDate);
       if (dayPlans[key]) {
         dayPlans[key].jobs.push({ row: job, hours: 0, dueDate: job.shippingDate });
-        scheduledRows.add(job.id || `${job.customer}-${job.partNumber}-${job.dispatchDate}`);
+        scheduledRows.add(rowKey(job));
       }
       return;
     }
@@ -204,7 +245,7 @@ function buildCapacityPlan(rows, startMonth) {
         isLate: workingDate > job.shippingDate,
       });
       scheduledHours += assignedHours;
-      scheduledRows.add(job.id || `${job.customer}-${job.partNumber}-${job.dispatchDate}`);
+      scheduledRows.add(rowKey(job));
       remainingHours -= assignedHours;
     }
   });
@@ -270,6 +311,10 @@ function renderMonth(monthDate, dayPlans) {
 
     const currentDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), dayNumber);
     const key = dateKey(currentDate);
+    cell.dataset.date = key;
+    cell.addEventListener("dragover", handleDragOver);
+    cell.addEventListener("dragleave", handleDragLeave);
+    cell.addEventListener("drop", handleDrop);
     cell.append(renderDayContent(dayNumber, dayPlans[key]));
     grid.append(cell);
   }
@@ -305,13 +350,19 @@ function renderDayContent(dayNumber, dayPlan) {
   dayPlan.jobs.slice(0, 4).forEach((entry) => {
     const job = entry.row;
     const item = document.createElement("li");
+    item.draggable = true;
+    item.dataset.rowKey = rowKey(job);
+    item.addEventListener("dragstart", handleDragStart);
     if (entry.isLate) {
       item.classList.add("calendar-job-late");
+    }
+    if (entry.isManual) {
+      item.classList.add("calendar-job-manual");
     }
     item.innerHTML = `
       <strong>${job.customer || "Unknown customer"}</strong>
       <span>${job.partNumber || ""} ${job.description || ""}</span>
-      <em>${formatHours(entry.hours)} | ships ${dateKey(entry.dueDate)}</em>
+      <em>${formatHours(entry.hours)} | ships ${dateKey(entry.dueDate)}${entry.isManual ? " | moved" : ""}</em>
     `;
     list.append(item);
   });
@@ -325,6 +376,36 @@ function renderDayContent(dayNumber, dayPlan) {
 
   fragment.append(list);
   return fragment;
+}
+
+function handleDragStart(event) {
+  event.dataTransfer.setData("text/plain", event.currentTarget.dataset.rowKey);
+  event.dataTransfer.effectAllowed = "move";
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+  event.currentTarget.classList.add("calendar-day-drop-target");
+}
+
+function handleDragLeave(event) {
+  event.currentTarget.classList.remove("calendar-day-drop-target");
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const target = event.currentTarget;
+  target.classList.remove("calendar-day-drop-target");
+  const key = event.dataTransfer.getData("text/plain");
+  const date = target.dataset.date;
+  if (!key || !date) {
+    return;
+  }
+
+  const overrides = loadOverrides();
+  overrides[key] = date;
+  saveOverrides(overrides);
+  renderCalendar();
 }
 
 function formatHours(value) {
