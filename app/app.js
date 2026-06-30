@@ -25,6 +25,7 @@
   ];
 
   var form = document.getElementById("schedule-form");
+  var techSelect = document.getElementById("tech");
   var recordIdInput = document.getElementById("record-id");
   var saveButton = document.getElementById("save-button");
   var clearFormButton = document.getElementById("clear-form-button");
@@ -140,6 +141,9 @@
       var input = form.elements[field.key];
 
       if (input) {
+        if (field.key === "tech") {
+          ensureTechOption(row[field.key]);
+        }
         input.value = row[field.key] || "";
       }
     });
@@ -154,6 +158,51 @@
     form.reset();
     recordIdInput.value = "";
     saveButton.textContent = "Add to Schedule";
+  }
+
+  async function loadTechOptions() {
+    if (!techSelect) {
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/staff-capacity");
+      if (!response.ok) {
+        return;
+      }
+
+      const payload = await response.json();
+      const names = Array.from(new Set((payload.users || [])
+        .map(function (user) { return String(user.name || "").trim(); })
+        .filter(Boolean)))
+        .sort(function (first, second) {
+          return first.localeCompare(second, undefined, { sensitivity: "base" });
+        });
+
+      const currentValue = techSelect.value;
+      techSelect.replaceChildren(new Option("Select staff member", ""));
+      names.forEach(function (name) {
+        techSelect.append(new Option(name, name));
+      });
+      ensureTechOption(currentValue);
+      techSelect.value = currentValue;
+    } catch (error) {
+      console.error("Unable to load staff dropdown.", error);
+    }
+  }
+
+  function ensureTechOption(value) {
+    if (!techSelect || !value) {
+      return;
+    }
+
+    var exists = Array.from(techSelect.options).some(function (option) {
+      return option.value === value;
+    });
+
+    if (!exists) {
+      techSelect.append(new Option(value + " (existing value)", value));
+    }
   }
 
   function buildHeader() {
@@ -487,4 +536,5 @@
   buildHeader();
   renderRows();
   showPage(pageFromHash());
+  loadTechOptions();
 })();
