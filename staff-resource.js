@@ -139,6 +139,7 @@ function renderGradeHours(users) {
       card.innerHTML = `
         <span>Grade ${total.grade}</span>
         <strong>${formatAnnualHours(total.totalHours)}</strong>
+        <small class="monthly-hours">Monthly: ${formatAnnualHours(total.totalHours / 12)}</small>
         <small>${total.staffCount} staff</small>
       `;
       return card;
