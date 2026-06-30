@@ -106,6 +106,10 @@ function renderStaff(users) {
 }
 
 function statusLabel(user) {
+  if (user.protected) {
+    return "Protected admin";
+  }
+
   if (user.blocked) {
     return "Blocked";
   }
@@ -121,6 +125,11 @@ function cell(value) {
 
 function actionCell(user) {
   const td = document.createElement("td");
+  if (user.protected) {
+    td.textContent = "Cannot block";
+    return td;
+  }
+
   const button = document.createElement("button");
   button.className = user.blocked ? "primary-button" : "danger-button";
   button.type = "button";

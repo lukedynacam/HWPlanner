@@ -152,8 +152,21 @@ async function seedImportedStaff(data) {
       ...data.users.map((user) => String(user.email || "").toLowerCase()),
     ]);
     let addedCount = 0;
+    let profileUpdated = false;
     for (const staffMember of imported.staff || []) {
       const email = String(staffMember.email || "").toLowerCase();
+      if (email === data.adminEmail) {
+        data.adminProfile = {
+          name: staffMember.name,
+          rating: normaliseRating(staffMember.rating),
+          hoursPerWeek: normaliseHoursPerWeek(staffMember.hoursPerWeek),
+          imported: true,
+          createdAt: staffMember.createdAt || new Date().toISOString(),
+        };
+        profileUpdated = true;
+        continue;
+      }
+
       if (!email || existingEmails.has(email)) {
         continue;
       }
@@ -176,7 +189,7 @@ async function seedImportedStaff(data) {
 
     const previousImportVersion = data.staffImportVersion;
     data.staffImportVersion = imported.version;
-    if (addedCount || previousImportVersion !== imported.version) {
+    if (addedCount || profileUpdated || previousImportVersion !== imported.version) {
       await writeAuthData(data);
     }
   } catch (error) {
@@ -232,6 +245,23 @@ function publicUser(user) {
     hasPassword: Boolean(user.passwordHash),
     imported: Boolean(user.imported),
     createdAt: user.createdAt,
+  };
+}
+
+function publicAdminUser(data) {
+  const profile = data.adminProfile || {};
+  return {
+    id: "admin-account",
+    name: profile.name || "Admin",
+    email: data.adminEmail,
+    role: "Admin",
+    rating: profile.rating || 5,
+    hoursPerWeek: profile.hoursPerWeek || 0,
+    blocked: false,
+    hasPassword: Boolean(data.passwordHash),
+    imported: Boolean(profile.imported),
+    protected: true,
+    createdAt: profile.createdAt || null,
   };
 }
 
@@ -422,7 +452,7 @@ async function handleApi(request, response, pathname) {
 
     const authData = await readAuthData();
     sendJson(response, 200, {
-      users: authData.users.map(publicUser),
+      users: [publicAdminUser(authData), ...authData.users.map(publicUser)],
     });
     return;
   }
@@ -498,6 +528,31 @@ async function handleApi(request, response, pathname) {
 
     const body = await readJsonBody(request);
     const authData = await readAuthData();
+    if (updateUserMatch[1] === "admin-account") {
+      const password = String(body.password || "");
+      if (password && password.length < 10) {
+        sendJson(response, 400, {
+          message: "Admin passwords must be at least 10 characters.",
+        });
+        return;
+      }
+
+      authData.adminProfile = {
+        name: String(body.name || "").trim() || "Admin",
+        rating: normaliseRating(body.rating),
+        hoursPerWeek: normaliseHoursPerWeek(body.hoursPerWeek),
+        imported: Boolean(authData.adminProfile?.imported),
+        createdAt: authData.adminProfile?.createdAt || new Date().toISOString(),
+      };
+      if (password) {
+        authData.passwordHash = await hashPassword(password);
+        sessions.clear();
+      }
+      await writeAuthData(authData);
+      sendJson(response, 200, { user: publicAdminUser(authData) });
+      return;
+    }
+
     const user = authData.users.find((staffUser) => staffUser.id === updateUserMatch[1]);
     if (!user) {
       sendJson(response, 404, { message: "Staff resource not found." });
@@ -566,6 +621,11 @@ async function handleApi(request, response, pathname) {
 
     const body = await readJsonBody(request);
     const authData = await readAuthData();
+    if (blockUserMatch[1] === "admin-account") {
+      sendJson(response, 400, { message: "The main admin login cannot be blocked." });
+      return;
+    }
+
     const user = authData.users.find((staffUser) => staffUser.id === blockUserMatch[1]);
     if (!user) {
       sendJson(response, 404, { message: "Staff login not found." });
