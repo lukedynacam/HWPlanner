@@ -146,7 +146,33 @@ function bindLogout() {
   });
 }
 
+async function applyGlobalPermissionVisibility() {
+  const permissionElements = document.querySelectorAll("[data-permission]");
+  if (!permissionElements.length) {
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/session");
+    if (!response.ok) {
+      return;
+    }
+
+    const session = await response.json();
+    permissionElements.forEach((element) => {
+      if (element.dataset.permission === "manage-users") {
+        element.hidden = !session.permissions?.canManageUsers;
+      }
+    });
+  } catch (error) {
+    permissionElements.forEach((element) => {
+      element.hidden = true;
+    });
+  }
+}
+
 bindLoginForm();
 bindForgotPasswordForm();
 bindResetForm();
 bindLogout();
+applyGlobalPermissionVisibility();

@@ -811,6 +811,20 @@ async function handleRequest(request, response) {
       return;
     }
 
+    if (["/staff-resource.html", "/staff-resource.js"].includes(pathname)) {
+      const session = getSession(request);
+      if (!canManageUsers(session)) {
+        if (path.extname(pathname) === ".html") {
+          response.writeHead(403, { "Content-Type": "text/html; charset=utf-8" });
+          response.end("<h1>Staff Resource access denied</h1><p>Only Admin and Management users can view this page.</p>");
+          return;
+        }
+
+        sendJson(response, 403, { message: "Only Admin and Management users can view Staff Resource." });
+        return;
+      }
+    }
+
     if (PROTECTED_FILES.has(pathname) || PUBLIC_FILES.has(pathname)) {
       await serveFile(response, path.join(ROOT, pathname));
       return;
