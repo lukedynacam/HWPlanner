@@ -138,6 +138,11 @@ function viewEndDate(startMonth) {
   return new Date(startMonth.getFullYear(), startMonth.getMonth() + viewMonths, 0);
 }
 
+function todayDate() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
 async function loadStaffCapacity() {
   try {
     const response = await fetch("/api/staff-capacity");
@@ -155,14 +160,14 @@ async function loadStaffCapacity() {
 }
 
 function buildCapacityPlan(rows, startMonth) {
+  const scheduleStart = todayDate();
   const endDate = viewEndDate(startMonth);
   const dailyCapacity = Number(staffCapacity.totalDailyHours || 0);
   const dayPlans = {};
-  const scheduledRows = new Set();
   const overrides = loadOverrides();
   let scheduledHours = 0;
 
-  for (let date = new Date(startMonth); date <= endDate; date.setDate(date.getDate() + 1)) {
+  for (let date = new Date(scheduleStart); date <= endDate; date.setDate(date.getDate() + 1)) {
     const key = dateKey(date);
     dayPlans[key] = {
       date: new Date(date),
@@ -179,9 +184,10 @@ function buildCapacityPlan(rows, startMonth) {
       plannedDate: parseDate(overrides[rowKey(row)]),
       hoursValue: Number(row.hours || 0),
     }))
-    .filter((row) => row.shippingDate && row.shippingDate >= startMonth && row.shippingDate <= endDate)
     .sort((first, second) => {
-      const dateDelta = first.shippingDate - second.shippingDate;
+      const firstShipDate = first.shippingDate || new Date(9999, 11, 31);
+      const secondShipDate = second.shippingDate || new Date(9999, 11, 31);
+      const dateDelta = firstShipDate - secondShipDate;
       if (dateDelta) {
         return dateDelta;
       }
@@ -191,9 +197,9 @@ function buildCapacityPlan(rows, startMonth) {
       });
     });
 
-  let workingDate = new Date(startMonth);
+  let workingDate = new Date(scheduleStart);
   jobs.forEach((job) => {
-    if (job.plannedDate && job.plannedDate >= startMonth && job.plannedDate <= endDate) {
+    if (job.plannedDate && job.plannedDate >= scheduleStart && job.plannedDate <= endDate) {
       const key = dateKey(job.plannedDate);
       if (dayPlans[key]) {
         const jobHours = Math.max(0, Number(job.hoursValue || 0));
@@ -202,21 +208,20 @@ function buildCapacityPlan(rows, startMonth) {
           row: job,
           hours: jobHours,
           dueDate: job.shippingDate,
-          isLate: job.plannedDate > job.shippingDate,
+          isLate: job.shippingDate ? job.plannedDate > job.shippingDate : false,
           isManual: true,
         });
         scheduledHours += jobHours;
-        scheduledRows.add(rowKey(job));
       }
       return;
     }
 
     const jobHours = Math.max(0, Number(job.hoursValue || 0));
     if (!jobHours) {
-      const key = dateKey(job.shippingDate);
+      const targetDate = job.shippingDate && job.shippingDate >= scheduleStart ? job.shippingDate : workingDate;
+      const key = dateKey(targetDate);
       if (dayPlans[key]) {
         dayPlans[key].jobs.push({ row: job, hours: 0, dueDate: job.shippingDate });
-        scheduledRows.add(rowKey(job));
       }
       return;
     }
@@ -242,17 +247,15 @@ function buildCapacityPlan(rows, startMonth) {
         row: job,
         hours: assignedHours,
         dueDate: job.shippingDate,
-        isLate: workingDate > job.shippingDate,
+        isLate: job.shippingDate ? workingDate > job.shippingDate : false,
       });
       scheduledHours += assignedHours;
-      scheduledRows.add(rowKey(job));
       remainingHours -= assignedHours;
     }
   });
 
   return {
     dayPlans,
-    scheduledJobCount: scheduledRows.size,
     scheduledHours,
     dailyCapacity,
   };
@@ -262,23 +265,26 @@ function renderCalendar() {
   const startMonth = parseMonth(elements.month.value);
   const rows = loadRows();
   const plan = buildCapacityPlan(rows, startMonth);
+  const visibleEntries = [];
   elements.months.classList.toggle("calendar-months-three", viewMonths === 3);
 
   elements.months.replaceChildren(
     ...Array.from({ length: viewMonths }, (_, index) => {
       const monthDate = addMonths(startMonth, index);
-      const monthElement = renderMonth(monthDate, plan.dayPlans);
+      const monthElement = renderMonth(monthDate, plan.dayPlans, visibleEntries);
       return monthElement;
     }),
   );
 
-  elements.visibleJobs.textContent = String(plan.scheduledJobCount);
-  elements.visibleHours.textContent = formatHours(plan.scheduledHours);
+  const visibleJobKeys = new Set(visibleEntries.map((entry) => rowKey(entry.row)));
+  const visibleHours = visibleEntries.reduce((sum, entry) => sum + Number(entry.hours || 0), 0);
+  elements.visibleJobs.textContent = String(visibleJobKeys.size);
+  elements.visibleHours.textContent = formatHours(visibleHours);
   elements.dailyCapacity.textContent = formatHours(plan.dailyCapacity);
   elements.viewLabel.textContent = viewMonths === 1 ? "1 month" : "3 months";
 }
 
-function renderMonth(monthDate, dayPlans) {
+function renderMonth(monthDate, dayPlans, visibleEntries) {
   const firstDay = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
   const lastDay = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0);
   const startOffset = (firstDay.getDay() + 6) % 7;
@@ -311,6 +317,9 @@ function renderMonth(monthDate, dayPlans) {
 
     const currentDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), dayNumber);
     const key = dateKey(currentDate);
+    if (dayPlans[key]) {
+      visibleEntries.push(...dayPlans[key].jobs);
+    }
     cell.dataset.date = key;
     cell.addEventListener("dragover", handleDragOver);
     cell.addEventListener("dragleave", handleDragLeave);
@@ -362,7 +371,7 @@ function renderDayContent(dayNumber, dayPlan) {
     item.innerHTML = `
       <strong>${job.customer || "Unknown customer"}</strong>
       <span>${job.partNumber || ""} ${job.description || ""}</span>
-      <em>${formatHours(entry.hours)} | ships ${dateKey(entry.dueDate)}${entry.isManual ? " | moved" : ""}</em>
+      <em>${formatHours(entry.hours)} | ships ${formatShipDate(entry.dueDate)}${entry.isManual ? " | moved" : ""}</em>
     `;
     list.append(item);
   });
@@ -412,6 +421,10 @@ function formatHours(value) {
   return `${Number(value || 0).toLocaleString(undefined, {
     maximumFractionDigits: 1,
   })}h`;
+}
+
+function formatShipDate(date) {
+  return date ? dateKey(date) : "no ship date";
 }
 
 function setViewMonths(monthCount) {
