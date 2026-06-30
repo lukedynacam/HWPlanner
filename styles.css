@@ -392,7 +392,12 @@ code {
 .grade-hours-card strong {
   color: var(--horizon-grey);
   font-family: "GilroyBold", Arial, sans-serif;
-  font-size: clamp(1.45rem, 3vw, 2.15rem);
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+}
+
+.grade-hours-card .monthly-hours {
+  color: var(--horizon-grey);
+  font-size: 0.82rem;
 }
 
 .panel {
