@@ -9,6 +9,7 @@ const ROOT = __dirname;
 const PORT = Number(process.env.PORT || 3000);
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "luke@horizon-wiring.co.uk").toLowerCase();
 const DATA_FILE = process.env.AUTH_DATA_FILE || path.join(ROOT, ".data", "auth.json");
+const STAFF_IMPORT_FILE = path.join(ROOT, "imported-staff.json");
 const SESSION_COOKIE = "hwplanner_session";
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const RESET_TTL_MS = 60 * 60 * 1000;
@@ -108,7 +109,7 @@ async function readAuthData() {
     const data = JSON.parse(await fs.readFile(DATA_FILE, "utf8"));
     data.adminEmail = (data.adminEmail || ADMIN_EMAIL).toLowerCase();
     data.users = Array.isArray(data.users) ? data.users : [];
-    return data;
+    return seedImportedStaff(data);
   } catch (error) {
     if (error.code !== "ENOENT") {
       throw error;
@@ -130,13 +131,61 @@ async function readAuthData() {
       );
     }
 
-    return initialData;
+    return seedImportedStaff(initialData);
   }
 }
 
 async function writeAuthData(data) {
   await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
   await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+async function seedImportedStaff(data) {
+  try {
+    const imported = JSON.parse(await fs.readFile(STAFF_IMPORT_FILE, "utf8"));
+    if (!imported.version || data.staffImportVersion === imported.version) {
+      return data;
+    }
+
+    const existingEmails = new Set([
+      data.adminEmail,
+      ...data.users.map((user) => String(user.email || "").toLowerCase()),
+    ]);
+    let addedCount = 0;
+    for (const staffMember of imported.staff || []) {
+      const email = String(staffMember.email || "").toLowerCase();
+      if (!email || existingEmails.has(email)) {
+        continue;
+      }
+
+      data.users.push({
+        id: staffMember.id || crypto.randomUUID(),
+        name: staffMember.name,
+        email,
+        role: normaliseRole(staffMember.role),
+        rating: normaliseRating(staffMember.rating),
+        hoursPerWeek: normaliseHoursPerWeek(staffMember.hoursPerWeek),
+        blocked: Boolean(staffMember.blocked),
+        imported: true,
+        passwordHash: null,
+        createdAt: staffMember.createdAt || new Date().toISOString(),
+      });
+      existingEmails.add(email);
+      addedCount += 1;
+    }
+
+    const previousImportVersion = data.staffImportVersion;
+    data.staffImportVersion = imported.version;
+    if (addedCount || previousImportVersion !== imported.version) {
+      await writeAuthData(data);
+    }
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("Unable to seed imported staff:", error);
+    }
+  }
+
+  return data;
 }
 
 function parseCookies(request) {
@@ -180,6 +229,8 @@ function publicUser(user) {
     rating: user.rating,
     hoursPerWeek: user.hoursPerWeek,
     blocked: Boolean(user.blocked),
+    hasPassword: Boolean(user.passwordHash),
+    imported: Boolean(user.imported),
     createdAt: user.createdAt,
   };
 }
@@ -194,6 +245,9 @@ function canManageUsers(session) {
 
 function normaliseRole(role) {
   const value = String(role || "").trim().toLowerCase();
+  if (value === "admin") {
+    return "Admin";
+  }
   if (value === "management") {
     return "Management";
   }
@@ -426,6 +480,74 @@ async function handleApi(request, response, pathname) {
     await writeAuthData(authData);
 
     sendJson(response, 201, { user: publicUser(user) });
+    return;
+  }
+
+  const updateUserMatch = pathname.match(/^\/api\/users\/([^/]+)$/);
+  if (request.method === "PUT" && updateUserMatch) {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "Only Admin and Management can update staff resources." });
+      return;
+    }
+
+    const body = await readJsonBody(request);
+    const authData = await readAuthData();
+    const user = authData.users.find((staffUser) => staffUser.id === updateUserMatch[1]);
+    if (!user) {
+      sendJson(response, 404, { message: "Staff resource not found." });
+      return;
+    }
+
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+
+    if (!name || !email || !email.includes("@")) {
+      sendJson(response, 400, { message: "Enter a staff name and valid email." });
+      return;
+    }
+
+    if (
+      email !== user.email &&
+      (email === authData.adminEmail || authData.users.some((staffUser) => staffUser.email === email))
+    ) {
+      sendJson(response, 409, { message: "A login already exists for that email." });
+      return;
+    }
+
+    if (password && password.length < 10) {
+      sendJson(response, 400, {
+        message: "Staff passwords must be at least 10 characters.",
+      });
+      return;
+    }
+
+    const previousEmail = user.email;
+    user.name = name;
+    user.email = email;
+    user.role = normaliseRole(body.role);
+    user.rating = normaliseRating(body.rating);
+    user.hoursPerWeek = normaliseHoursPerWeek(body.hoursPerWeek);
+    if (password) {
+      user.passwordHash = await hashPassword(password);
+    }
+    await writeAuthData(authData);
+
+    if (previousEmail !== user.email || password) {
+      for (const [token, activeSession] of sessions.entries()) {
+        if (activeSession.email === previousEmail || activeSession.email === user.email) {
+          sessions.delete(token);
+        }
+      }
+    }
+
+    sendJson(response, 200, { user: publicUser(user) });
     return;
   }
 

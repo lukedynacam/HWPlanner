@@ -10,12 +10,16 @@ const elements = {
   accessRole: document.querySelector("#staff-access-role"),
   accessDescription: document.querySelector("#staff-access-description"),
   form: document.querySelector("#staff-resource-form"),
+  resourceId: document.querySelector("#resource-id"),
+  submit: document.querySelector("#resource-submit"),
+  cancelEdit: document.querySelector("#resource-cancel-edit"),
   message: document.querySelector("#staff-resource-message"),
   table: document.querySelector("#staff-resource-table"),
   refresh: document.querySelector("#refresh-staff-resource"),
 };
 
 let canManageUsers = false;
+let staffUsers = [];
 
 function setResourceMessage(message, type = "info") {
   if (!elements.message) {
@@ -73,12 +77,13 @@ async function loadStaff() {
   }
 
   const payload = await requestJson("/api/users");
-  renderStaff(payload.users || []);
+  staffUsers = payload.users || [];
+  renderStaff(staffUsers);
 }
 
 function renderStaff(users) {
   if (!users.length) {
-    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="7">No staff accounts yet.</td></tr>';
+    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="8">No staff accounts yet.</td></tr>';
     return;
   }
 
@@ -91,12 +96,21 @@ function renderStaff(users) {
         cell(formatHours(user.hoursPerWeek)),
         cell(`${user.rating || 1}/5`),
         cell(user.role),
-        cell(user.blocked ? "Blocked" : "Active"),
+        cell(statusLabel(user)),
+        detailsCell(user),
         actionCell(user),
       );
       return row;
     }),
   );
+}
+
+function statusLabel(user) {
+  if (user.blocked) {
+    return "Blocked";
+  }
+
+  return user.hasPassword ? "Active" : "Pending details";
 }
 
 function cell(value) {
@@ -112,6 +126,17 @@ function actionCell(user) {
   button.type = "button";
   button.textContent = user.blocked ? "Unblock Login" : "Block Login";
   button.addEventListener("click", () => toggleBlock(user));
+  td.append(button);
+  return td;
+}
+
+function detailsCell(user) {
+  const td = document.createElement("td");
+  const button = document.createElement("button");
+  button.className = "primary-button";
+  button.type = "button";
+  button.textContent = "Edit Details";
+  button.addEventListener("click", () => editUser(user));
   td.append(button);
   return td;
 }
@@ -139,29 +164,60 @@ async function toggleBlock(user) {
 
 async function handleSubmit(event) {
   event.preventDefault();
-  setResourceMessage("Creating staff resource...");
+  const editingId = elements.resourceId.value;
+  setResourceMessage(editingId ? "Updating staff resource..." : "Creating staff resource...");
   const formData = new FormData(elements.form);
+  const password = String(formData.get("password") || "");
+
+  if (!editingId && password.length < 10) {
+    setResourceMessage("New staff logins need a password with at least 10 characters.", "error");
+    return;
+  }
 
   try {
-    const payload = await requestJson("/api/users", {
-      method: "POST",
+    const payload = await requestJson(editingId ? `/api/users/${editingId}` : "/api/users", {
+      method: editingId ? "PUT" : "POST",
       body: JSON.stringify({
         name: formData.get("name"),
         email: formData.get("email"),
         hoursPerWeek: formData.get("hoursPerWeek"),
         rating: formData.get("rating"),
         role: formData.get("role"),
-        password: formData.get("password"),
+        password,
       }),
     });
-    elements.form.reset();
-    document.querySelector("#resource-rating").value = "3";
-    document.querySelector("#resource-role").value = "Tech";
-    setResourceMessage(`Created login for ${payload.user.email}.`, "success");
+    resetForm();
+    setResourceMessage(
+      editingId ? `Updated ${payload.user.email}.` : `Created login for ${payload.user.email}.`,
+      "success",
+    );
     await loadStaff();
   } catch (error) {
     setResourceMessage(error.message, "error");
   }
+}
+
+function editUser(user) {
+  elements.resourceId.value = user.id;
+  document.querySelector("#resource-name").value = user.name || "";
+  document.querySelector("#resource-email").value = user.email || "";
+  document.querySelector("#resource-hours").value = user.hoursPerWeek || 0;
+  document.querySelector("#resource-rating").value = String(user.rating || 1);
+  document.querySelector("#resource-role").value = user.role || "Tech";
+  document.querySelector("#resource-password").value = "";
+  elements.submit.textContent = "Update Staff";
+  elements.cancelEdit.hidden = false;
+  setResourceMessage("Editing staff details. Leave password blank to keep the existing login password.");
+  elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function resetForm() {
+  elements.form.reset();
+  elements.resourceId.value = "";
+  document.querySelector("#resource-rating").value = "3";
+  document.querySelector("#resource-role").value = "Tech";
+  elements.submit.textContent = "Add Staff";
+  elements.cancelEdit.hidden = true;
 }
 
 async function initialiseStaffResource() {
@@ -172,6 +228,7 @@ async function initialiseStaffResource() {
 
   applyAccess(session);
   elements.form.addEventListener("submit", handleSubmit);
+  elements.cancelEdit.addEventListener("click", resetForm);
   elements.refresh.addEventListener("click", loadStaff);
   await loadStaff();
 }

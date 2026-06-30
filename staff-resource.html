@@ -50,6 +50,7 @@
             </div>
 
             <form id="staff-resource-form" class="entry-grid">
+              <input id="resource-id" name="id" type="hidden">
               <label>
                 Name
                 <input id="resource-name" name="name" type="text" placeholder="Alex Morgan" required>
@@ -75,6 +76,7 @@
               <label>
                 Role
                 <select id="resource-role" name="role" required>
+                  <option value="Admin">Admin</option>
                   <option value="Management">Management</option>
                   <option value="Lead">Lead</option>
                   <option value="Tech" selected>Tech</option>
@@ -83,9 +85,10 @@
               </label>
               <label>
                 Login password
-                <input id="resource-password" name="password" type="password" minlength="10" autocomplete="new-password" required>
+                <input id="resource-password" name="password" type="password" minlength="10" autocomplete="new-password">
               </label>
-              <button class="button primary" type="submit">Add Staff</button>
+              <button id="resource-submit" class="button primary" type="submit">Add Staff</button>
+              <button id="resource-cancel-edit" class="button secondary" type="button" hidden>Cancel Edit</button>
             </form>
             <p id="staff-resource-message" class="form-message" role="status"></p>
           </section>
@@ -110,6 +113,7 @@
                     <th>Grading</th>
                     <th>Role</th>
                     <th>Status</th>
+                    <th>Details</th>
                     <th>Login</th>
                   </tr>
                 </thead>
