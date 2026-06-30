@@ -30,6 +30,8 @@ const PROTECTED_FILES = new Set([
   "/app/index.html",
   "/app/styles.css",
   "/index.html",
+  "/calendar-planner.html",
+  "/calendar-planner.js",
   "/staff-resource.html",
   "/staff-resource.js",
 ]);
