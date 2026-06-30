@@ -67,7 +67,7 @@
   }
 
   function saveRows(rows) {
-    window.localStorage.setItem(storageKey, JSON.stringify(rows));
+    window.localStorage.setItem(storageKey, JSON.stringify(rows.map(normaliseScheduleRow)));
   }
 
   function normaliseScheduleRow(row) {
@@ -77,8 +77,8 @@
   }
 
   function normaliseCustomerName(customer) {
-    var value = String(customer || "").trim();
-    if (/red bull power\\s*trains/i.test(value)) {
+    var value = String(customer || "").replace(/\s+/g, " ").trim();
+    if (/red\s*bull/i.test(value) && /power\s*trains?/i.test(value)) {
       return "Red Bull Powertrains";
     }
 
@@ -107,12 +107,13 @@
       }
     }
 
+    existingRows = existingRows.map(normaliseScheduleRow);
     var existingIds = new Set(existingRows.map(function (row) {
       return row.id;
     }));
     var rowsToImport = importedRows.filter(function (row) {
       return !existingIds.has(row.id);
-    });
+    }).map(normaliseScheduleRow);
 
     saveRows(existingRows.concat(rowsToImport));
     window.localStorage.setItem(importedRowsKey, importedVersion);
@@ -192,7 +193,7 @@
 
       fields.forEach(function (field) {
         var td = document.createElement("td");
-        td.textContent = row[field.key] || "";
+        td.textContent = field.key === "customer" ? normaliseCustomerName(row[field.key]) : row[field.key] || "";
         tr.appendChild(td);
       });
 

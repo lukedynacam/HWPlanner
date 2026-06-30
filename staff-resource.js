@@ -350,6 +350,7 @@ async function handleSubmit(event) {
 function resetForm() {
   elements.form.reset();
   elements.resourceId.value = "";
+  document.querySelector("#resource-hours").value = "40";
   document.querySelector("#resource-rating").value = "3";
   document.querySelector("#resource-role").value = "Tech";
   elements.submit.textContent = "Add Staff";

@@ -365,6 +365,140 @@ code {
   border: 1px solid var(--horizon-border);
 }
 
+.calendar-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-control-fields,
+.calendar-view-toggle {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.calendar-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-months {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-months-three {
+  grid-template-columns: repeat(3, minmax(360px, 1fr));
+  overflow-x: auto;
+}
+
+.calendar-month {
+  padding: clamp(1rem, 2vw, 1.45rem);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--horizon-border);
+  box-shadow: 0 10px 28px rgba(17, 17, 18, 0.08);
+}
+
+.calendar-month header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--horizon-border);
+}
+
+.calendar-month h2 {
+  position: relative;
+  margin: 0;
+  padding-bottom: 0.8rem;
+  font-family: "GilroyBold", Arial, sans-serif;
+}
+
+.calendar-month h2::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 62px;
+  height: 4px;
+  content: "";
+  background: var(--horizon-yellow);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(145px, 1fr));
+  overflow-x: auto;
+  border-top: 1px solid var(--horizon-border);
+  border-left: 1px solid var(--horizon-border);
+}
+
+.calendar-day-name,
+.calendar-day {
+  border-right: 1px solid var(--horizon-border);
+  border-bottom: 1px solid var(--horizon-border);
+}
+
+.calendar-day-name {
+  padding: 0.65rem;
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+  font-family: "GilroyBold", Arial, sans-serif;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.calendar-day {
+  min-height: 150px;
+  padding: 0.55rem;
+  background: var(--horizon-white);
+}
+
+.calendar-day-empty {
+  background: rgba(248, 248, 248, 0.72);
+}
+
+.calendar-date {
+  display: inline-flex;
+  min-width: 2rem;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--horizon-yellow);
+  background: var(--horizon-grey);
+  font-family: "GilroyBold", Arial, sans-serif;
+}
+
+.calendar-job-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calendar-job-list li {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.42rem;
+  background: rgba(255, 230, 0, 0.18);
+  border-left: 4px solid var(--horizon-yellow);
+}
+
+.calendar-job-list strong {
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.78rem;
+}
+
+.calendar-job-list span,
+.calendar-more {
+  color: var(--horizon-grey-light);
+  font-size: 0.75rem;
+}
+
 .grade-hours-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

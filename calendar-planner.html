@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Planner | HWPlanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth.js" defer></script>
+    <script src="/app/imported-schedule-rows.js" defer></script>
+    <script src="calendar-planner.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section class="app-shell calendar-shell">
+        <header class="app-header">
+          <div class="app-brand-block">
+            <img
+              class="brand-logo brand-logo-white"
+              src="https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/images/Logo-White.ef0dd9d122b5d81fa8b78d5b9a4e5ef3.svg"
+              alt="Horizon Wiring"
+            >
+            <span class="brand-tag">Planner</span>
+          </div>
+          <div class="app-title-block">
+            <p class="eyebrow">Calendar Planner</p>
+            <h1>Schedule calendar</h1>
+          </div>
+          <nav class="top-page-nav" aria-label="Planner pages">
+            <a href="/">Production Planner</a>
+            <a href="/app/#input-page">Input Data</a>
+            <a href="/app/#schedule-page">Scheduling Programme</a>
+            <a class="active" href="/calendar-planner.html">Calendar Planner</a>
+            <a href="/staff-resource.html" data-permission="manage-users">Staff Resource</a>
+          </nav>
+          <div class="header-actions">
+            <button id="logout-button" type="button" class="button ghost">Log out</button>
+          </div>
+        </header>
+
+        <section class="panel calendar-controls" aria-labelledby="calendar-controls-title">
+          <div>
+            <p class="eyebrow">View options</p>
+            <h2 id="calendar-controls-title">Plan by dispatch date</h2>
+            <p class="muted">Jobs appear on the calendar using their Dispatch Date from the scheduling programme.</p>
+          </div>
+          <div class="calendar-control-fields">
+            <label>
+              Start month
+              <input id="calendar-month" type="month">
+            </label>
+            <div class="calendar-view-toggle" role="group" aria-label="Calendar view length">
+              <button class="button primary" id="one-month-view" type="button" data-months="1">1 Month</button>
+              <button class="button secondary" id="three-month-view" type="button" data-months="3">3 Month</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="calendar-summary-grid" aria-label="Calendar summary">
+          <article class="summary-card">
+            <span>Visible jobs</span>
+            <strong id="calendar-visible-jobs">0</strong>
+          </article>
+          <article class="summary-card">
+            <span>Visible hours</span>
+            <strong id="calendar-visible-hours">0h</strong>
+          </article>
+          <article class="summary-card">
+            <span>View</span>
+            <strong id="calendar-view-label">1 month</strong>
+          </article>
+        </section>
+
+        <section id="calendar-months" class="calendar-months" aria-live="polite"></section>
+      </section>
+    </main>
+  </body>
+</html>

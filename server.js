@@ -10,6 +10,8 @@ const PORT = Number(process.env.PORT || 3000);
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "luke@horizon-wiring.co.uk").toLowerCase();
 const DATA_FILE = process.env.AUTH_DATA_FILE || path.join(ROOT, ".data", "auth.json");
 const STAFF_IMPORT_FILE = path.join(ROOT, "imported-staff.json");
+const STANDARD_WEEK_HOURS_VERSION = "2026-06-30-40h-standard";
+const STANDARD_WEEK_HOURS = 40;
 const SESSION_COOKIE = "hwplanner_session";
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const RESET_TTL_MS = 60 * 60 * 1000;
@@ -28,6 +30,8 @@ const PROTECTED_FILES = new Set([
   "/app/index.html",
   "/app/styles.css",
   "/index.html",
+  "/calendar-planner.html",
+  "/calendar-planner.js",
   "/staff-resource.html",
   "/staff-resource.js",
 ]);
@@ -109,7 +113,7 @@ async function readAuthData() {
     const data = JSON.parse(await fs.readFile(DATA_FILE, "utf8"));
     data.adminEmail = (data.adminEmail || ADMIN_EMAIL).toLowerCase();
     data.users = Array.isArray(data.users) ? data.users : [];
-    return seedImportedStaff(data);
+    return applyStandardWeekHours(await seedImportedStaff(data));
   } catch (error) {
     if (error.code !== "ENOENT") {
       throw error;
@@ -131,13 +135,31 @@ async function readAuthData() {
       );
     }
 
-    return seedImportedStaff(initialData);
+    return applyStandardWeekHours(await seedImportedStaff(initialData));
   }
 }
 
 async function writeAuthData(data) {
   await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
   await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+async function applyStandardWeekHours(data) {
+  if (data.standardWeekHoursVersion === STANDARD_WEEK_HOURS_VERSION) {
+    return data;
+  }
+
+  data.adminProfile = {
+    ...(data.adminProfile || {}),
+    hoursPerWeek: STANDARD_WEEK_HOURS,
+  };
+  data.users = data.users.map((user) => ({
+    ...user,
+    hoursPerWeek: STANDARD_WEEK_HOURS,
+  }));
+  data.standardWeekHoursVersion = STANDARD_WEEK_HOURS_VERSION;
+  await writeAuthData(data);
+  return data;
 }
 
 async function seedImportedStaff(data) {
