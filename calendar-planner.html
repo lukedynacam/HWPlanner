@@ -40,8 +40,8 @@
         <section class="panel calendar-controls" aria-labelledby="calendar-controls-title">
           <div>
             <p class="eyebrow">View options</p>
-            <h2 id="calendar-controls-title">Plan by dispatch date</h2>
-            <p class="muted">Jobs appear on the calendar using their Dispatch Date from the scheduling programme.</p>
+            <h2 id="calendar-controls-title">Capacity-loaded calendar</h2>
+            <p class="muted">Jobs are prioritised by earliest shipping date and loaded into working days using staff daily capacity.</p>
           </div>
           <div class="calendar-control-fields">
             <label>
@@ -57,12 +57,16 @@
 
         <section class="calendar-summary-grid" aria-label="Calendar summary">
           <article class="summary-card">
-            <span>Visible jobs</span>
+            <span>Scheduled jobs</span>
             <strong id="calendar-visible-jobs">0</strong>
           </article>
           <article class="summary-card">
-            <span>Visible hours</span>
+            <span>Scheduled hours</span>
             <strong id="calendar-visible-hours">0h</strong>
+          </article>
+          <article class="summary-card">
+            <span>Daily capacity</span>
+            <strong id="calendar-daily-capacity">0h</strong>
           </article>
           <article class="summary-card">
             <span>View</span>

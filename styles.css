@@ -383,7 +383,7 @@ code {
 
 .calendar-summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -457,6 +457,12 @@ code {
   background: var(--horizon-white);
 }
 
+.calendar-day-drop-target {
+  outline: 3px dashed var(--horizon-yellow);
+  outline-offset: -6px;
+  background: rgba(255, 230, 0, 0.12);
+}
+
 .calendar-day-empty {
   background: rgba(248, 248, 248, 0.72);
 }
@@ -470,6 +476,16 @@ code {
   color: var(--horizon-yellow);
   background: var(--horizon-grey);
   font-family: "GilroyBold", Arial, sans-serif;
+}
+
+.calendar-capacity {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--horizon-grey-light);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .calendar-job-list {
@@ -486,6 +502,11 @@ code {
   padding: 0.42rem;
   background: rgba(255, 230, 0, 0.18);
   border-left: 4px solid var(--horizon-yellow);
+  cursor: grab;
+}
+
+.calendar-job-list li:active {
+  cursor: grabbing;
 }
 
 .calendar-job-list strong {
@@ -494,9 +515,23 @@ code {
 }
 
 .calendar-job-list span,
+.calendar-job-list em,
 .calendar-more {
   color: var(--horizon-grey-light);
   font-size: 0.75rem;
+}
+
+.calendar-job-list em {
+  color: var(--horizon-grey);
+  font-style: normal;
+}
+
+.calendar-job-late {
+  border-left-color: var(--danger) !important;
+}
+
+.calendar-job-manual {
+  background: rgba(49, 49, 51, 0.08) !important;
 }
 
 .grade-hours-grid {
@@ -949,6 +984,7 @@ tbody tr:hover td {
   .summary-grid,
   .workspace-grid,
   .staff-resource-grid,
+  .calendar-summary-grid,
   .capacity-bars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -979,6 +1015,7 @@ tbody tr:hover td {
   .workspace-grid,
   .staff-resource-grid,
   .capacity-bars,
+  .calendar-summary-grid,
   .entry-grid {
     grid-template-columns: 1fr;
   }
