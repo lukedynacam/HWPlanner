@@ -15,6 +15,7 @@ const elements = {
   cancelEdit: document.querySelector("#resource-cancel-edit"),
   message: document.querySelector("#staff-resource-message"),
   table: document.querySelector("#staff-resource-table"),
+  gradeHoursGrid: document.querySelector("#grade-hours-grid"),
   refresh: document.querySelector("#refresh-staff-resource"),
 };
 
@@ -79,11 +80,13 @@ async function loadStaff() {
   const payload = await requestJson("/api/users");
   staffUsers = payload.users || [];
   renderStaff(staffUsers);
+  renderGradeHours(staffUsers);
 }
 
 function renderStaff(users) {
   if (!users.length) {
     elements.table.innerHTML = '<tr><td class="empty-cell" colspan="9">No staff accounts yet.</td></tr>';
+    renderGradeHours([]);
     return;
   }
 
@@ -114,6 +117,31 @@ function renderStaff(users) {
         actionCell(user),
       );
       return row;
+    }),
+  );
+}
+
+function renderGradeHours(users) {
+  if (!elements.gradeHoursGrid) {
+    return;
+  }
+
+  const totals = [1, 2, 3, 4, 5].map((grade) => {
+    const usersInGrade = users.filter((user) => Number(user.rating || 1) === grade);
+    const totalHours = usersInGrade.reduce((sum, user) => sum + calculateAnnualHours(user), 0);
+    return { grade, totalHours, staffCount: usersInGrade.length };
+  });
+
+  elements.gradeHoursGrid.replaceChildren(
+    ...totals.map((total) => {
+      const card = document.createElement("article");
+      card.className = "grade-hours-card";
+      card.innerHTML = `
+        <span>Grade ${total.grade}</span>
+        <strong>${formatAnnualHours(total.totalHours)}</strong>
+        <small>${total.staffCount} staff</small>
+      `;
+      return card;
     }),
   );
 }
