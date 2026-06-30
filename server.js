@@ -339,6 +339,24 @@ function normaliseHolidayDays(holidayDays) {
   return Math.round(parsed * 2) / 2;
 }
 
+function annualHoursForUser(user) {
+  return (261 - normaliseHolidayDays(user.holidayDays)) * (normaliseHoursPerWeek(user.hoursPerWeek) / 5);
+}
+
+function staffCapacityUser(user) {
+  const annualHours = annualHoursForUser(user);
+  return {
+    id: user.id,
+    name: user.name,
+    role: user.role,
+    rating: user.rating,
+    hoursPerWeek: user.hoursPerWeek || 0,
+    holidayDays: user.holidayDays || 0,
+    annualHours,
+    dailyHours: annualHours / 261,
+  };
+}
+
 function createSession(email, user = {}) {
   const token = crypto.randomBytes(32).toString("hex");
   sessions.set(token, {
@@ -467,6 +485,25 @@ async function handleApi(request, response, pathname) {
       role: session.role,
       rating: session.rating,
       permissions: session.permissions || permissionsForRole(session.role),
+    });
+    return;
+  }
+
+  if (request.method === "GET" && pathname === "/api/staff-capacity") {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    const authData = await readAuthData();
+    const users = [publicAdminUser(authData), ...authData.users.map(publicUser)].map(staffCapacityUser);
+    const totalAnnualHours = users.reduce((sum, user) => sum + user.annualHours, 0);
+    sendJson(response, 200, {
+      staffCount: users.length,
+      totalAnnualHours,
+      totalDailyHours: totalAnnualHours / 261,
+      users,
     });
     return;
   }

@@ -383,7 +383,7 @@ code {
 
 .calendar-summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -472,6 +472,16 @@ code {
   font-family: "GilroyBold", Arial, sans-serif;
 }
 
+.calendar-capacity {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--horizon-grey-light);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .calendar-job-list {
   display: grid;
   gap: 0.35rem;
@@ -494,9 +504,19 @@ code {
 }
 
 .calendar-job-list span,
+.calendar-job-list em,
 .calendar-more {
   color: var(--horizon-grey-light);
   font-size: 0.75rem;
+}
+
+.calendar-job-list em {
+  color: var(--horizon-grey);
+  font-style: normal;
+}
+
+.calendar-job-late {
+  border-left-color: var(--danger) !important;
 }
 
 .grade-hours-grid {
@@ -949,6 +969,7 @@ tbody tr:hover td {
   .summary-grid,
   .workspace-grid,
   .staff-resource-grid,
+  .calendar-summary-grid,
   .capacity-bars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -979,6 +1000,7 @@ tbody tr:hover td {
   .workspace-grid,
   .staff-resource-grid,
   .capacity-bars,
+  .calendar-summary-grid,
   .entry-grid {
     grid-template-columns: 1fr;
   }
