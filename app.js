@@ -255,6 +255,7 @@ async function handleStaffSubmit(event) {
       name: normalised.name,
       role: normalised.role,
       rating: normalised.rating,
+      hoursPerWeek: normalised.hours,
       email: normalised.email,
       password: elements.staffPassword.value,
     });

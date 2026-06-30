@@ -61,6 +61,10 @@ Adding a staff member creates a server-side login account for that email. Staff
 members can sign in through the same login page and can use the forgot-password
 flow if SMTP is configured.
 
+The dedicated Staff Resource page at `/staff-resource.html` is for Admin and
+Management users. It can add staff login accounts and block or unblock existing
+staff logins.
+
 ## Role access
 
 Current role access is:

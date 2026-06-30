@@ -50,9 +50,9 @@ textarea {
 
 .app-header {
   display: grid;
-  grid-template-columns: auto minmax(240px, 1fr) auto;
-  gap: clamp(1rem, 3vw, 2rem);
-  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(0.9rem, 2vw, 1.4rem) clamp(1rem, 3vw, 2rem);
+  align-items: start;
   padding: clamp(1rem, 2.6vw, 1.65rem) clamp(1rem, 3vw, 2rem);
   color: var(--horizon-white);
   background: var(--horizon-grey);
@@ -63,10 +63,13 @@ textarea {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .brand-logo {
-  width: clamp(180px, 20vw, 227px);
+  width: clamp(160px, 17vw, 220px);
+  max-width: 100%;
 }
 
 .brand-tag {
@@ -90,8 +93,10 @@ textarea {
 
 .page-title h1 {
   font-family: "GilroyBold", Arial, sans-serif;
-  font-size: clamp(1.6rem, 3.4vw, 3rem);
-  line-height: 1.05;
+  font-size: clamp(1.7rem, 3vw, 2.75rem);
+  line-height: 1.08;
+  max-width: 18ch;
+  overflow-wrap: anywhere;
 }
 
 .eyebrow {
@@ -111,14 +116,26 @@ nav,
 }
 
 nav {
+  grid-column: 1 / -1;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 main {
-  width: min(1500px, 100%);
+  width: 100%;
   margin: 0 auto;
   padding: clamp(1rem, 3vw, 2rem);
+}
+
+#input-page {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+}
+
+#schedule-page {
+  width: 100%;
 }
 
 .page {
@@ -304,14 +321,59 @@ textarea {
   margin-top: 18px;
 }
 
+.schedule-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.2fr) minmax(180px, 0.6fr) minmax(180px, 0.6fr) auto auto;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--horizon-border);
+  border-left: 8px solid var(--horizon-yellow);
+  box-shadow: 0 10px 28px rgba(17, 17, 18, 0.08);
+}
+
+.filter-count {
+  margin: 0;
+  color: var(--horizon-grey-light);
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
 .table-wrapper {
   overflow-x: auto;
+}
+
+#schedule-page .table-wrapper {
+  width: 100%;
+  max-width: 100%;
 }
 
 table {
   width: 100%;
   min-width: 1600px;
   border-collapse: collapse;
+}
+
+#schedule-table {
+  width: max-content;
+  min-width: 100%;
+}
+
+#schedule-table th,
+#schedule-table td {
+  white-space: nowrap;
+}
+
+#schedule-table th:nth-child(3),
+#schedule-table td:nth-child(3),
+#schedule-table th:nth-child(11),
+#schedule-table td:nth-child(11) {
+  min-width: 260px;
+  white-space: normal;
 }
 
 th,
@@ -331,6 +393,25 @@ th {
   letter-spacing: 1.4px;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.sort-button {
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-transform: inherit;
+}
+
+.sort-button:hover,
+.sort-button:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 td {
@@ -367,6 +448,14 @@ tbody tr:hover td {
     grid-template-columns: 1fr;
   }
 
+  .page-title h1 {
+    max-width: none;
+  }
+
+  .schedule-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   nav {
     justify-content: flex-start;
   }
@@ -380,7 +469,8 @@ tbody tr:hover td {
   }
 
   nav,
-  .schedule-actions {
+  .schedule-actions,
+  .schedule-toolbar {
     display: grid;
   }
 

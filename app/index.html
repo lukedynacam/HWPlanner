@@ -25,6 +25,7 @@
         <a class="nav-link" href="/">Site Home</a>
         <button class="nav-button active" type="button" data-page-target="input-page">Input Data</button>
         <button class="nav-button" type="button" data-page-target="schedule-page">Scheduling Programme</button>
+        <a class="nav-link" href="/staff-resource.html" data-permission="manage-users">Staff Resource</a>
         <button class="nav-button" id="logout-button" type="button">Sign out</button>
       </nav>
     </header>
@@ -155,6 +156,25 @@
           </div>
         </div>
 
+        <div class="schedule-toolbar" aria-label="Schedule filters">
+          <label>
+            <span>Search jobs</span>
+            <input id="schedule-search" type="search" placeholder="Customer, part, job card, notes...">
+          </label>
+          <label>
+            <span>Status</span>
+            <select id="schedule-status-filter">
+              <option value="">All statuses</option>
+            </select>
+          </label>
+          <label>
+            <span>Tech</span>
+            <input id="schedule-tech-filter" type="search" placeholder="Filter by tech">
+          </label>
+          <button id="reset-schedule-filters" class="secondary-button" type="button">Reset filters</button>
+          <p id="schedule-filter-count" class="filter-count" role="status">Showing all rows</p>
+        </div>
+
         <div class="table-wrapper">
           <table id="schedule-table">
             <thead>
@@ -167,6 +187,7 @@
       </section>
     </main>
 
+    <script src="imported-schedule-rows.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
