@@ -273,8 +273,33 @@ code {
   background: var(--danger);
 }
 
+.primary-button,
+.danger-button {
+  min-height: 2.4rem;
+  padding: 0.55rem 0.8rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: "GilroyBold", Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.primary-button {
+  color: var(--horizon-grey);
+  background: var(--horizon-yellow);
+}
+
+.danger-button {
+  color: var(--horizon-white);
+  background: var(--danger);
+}
+
 .summary-grid,
-.workspace-grid {
+.workspace-grid,
+.staff-resource-grid {
   display: grid;
   gap: 1rem;
 }
@@ -315,6 +340,15 @@ code {
 
 .workspace-grid {
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+}
+
+.staff-resource-grid {
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+}
+
+.staff-resource-list-panel .table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--horizon-border);
 }
 
 .panel {
@@ -700,6 +734,7 @@ tbody tr:hover td {
   .app-header,
   .summary-grid,
   .workspace-grid,
+  .staff-resource-grid,
   .capacity-bars {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -724,6 +759,7 @@ tbody tr:hover td {
   .app-header,
   .summary-grid,
   .workspace-grid,
+  .staff-resource-grid,
   .capacity-bars,
   .entry-grid {
     grid-template-columns: 1fr;

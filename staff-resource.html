@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Staff Resource | HWPlanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="auth.js" defer></script>
+    <script src="staff-resource.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section class="app-shell staff-resource-shell">
+        <header class="app-header">
+          <div class="app-brand-block">
+            <img
+              class="brand-logo brand-logo-white"
+              src="https://horizon-wiring.co.uk/wp-content/themes/es-template/dist/images/Logo-White.ef0dd9d122b5d81fa8b78d5b9a4e5ef3.svg"
+              alt="Horizon Wiring"
+            >
+            <span class="brand-tag">Planner</span>
+          </div>
+          <div class="app-title-block">
+            <p class="eyebrow">Staff Resource</p>
+            <h1>Staff members and access</h1>
+          </div>
+          <nav class="top-page-nav" aria-label="Planner pages">
+            <a href="/">Production Planner</a>
+            <a href="/app/#input-page">Input Data</a>
+            <a href="/app/#schedule-page">Scheduling Programme</a>
+            <a class="active" href="/staff-resource.html">Staff Resource</a>
+          </nav>
+          <div class="header-actions">
+            <button id="logout-button" type="button" class="button ghost">Log out</button>
+          </div>
+        </header>
+
+        <section class="access-banner" aria-live="polite">
+          <strong id="staff-access-role">Loading access</strong>
+          <span id="staff-access-description">Checking staff resource permissions.</span>
+        </section>
+
+        <div class="staff-resource-grid">
+          <section class="panel" aria-labelledby="staff-resource-form-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Create Login</p>
+                <h2 id="staff-resource-form-title">Add staff member</h2>
+              </div>
+            </div>
+
+            <form id="staff-resource-form" class="entry-grid">
+              <label>
+                Name
+                <input id="resource-name" name="name" type="text" placeholder="Alex Morgan" required>
+              </label>
+              <label>
+                Email
+                <input id="resource-email" name="email" type="email" placeholder="name@horizon-wiring.co.uk" autocomplete="off" required>
+              </label>
+              <label>
+                Hours per week
+                <input id="resource-hours" name="hoursPerWeek" type="number" min="0" step="0.25" placeholder="37.5" required>
+              </label>
+              <label>
+                Grading score
+                <select id="resource-rating" name="rating" required>
+                  <option value="1">1 - Developing</option>
+                  <option value="2">2 - Capable</option>
+                  <option value="3" selected>3 - Skilled</option>
+                  <option value="4">4 - Senior</option>
+                  <option value="5">5 - Expert</option>
+                </select>
+              </label>
+              <label>
+                Role
+                <select id="resource-role" name="role" required>
+                  <option value="Management">Management</option>
+                  <option value="Lead">Lead</option>
+                  <option value="Tech" selected>Tech</option>
+                  <option value="Inspection">Inspection</option>
+                </select>
+              </label>
+              <label>
+                Login password
+                <input id="resource-password" name="password" type="password" minlength="10" autocomplete="new-password" required>
+              </label>
+              <button class="button primary" type="submit">Add Staff</button>
+            </form>
+            <p id="staff-resource-message" class="form-message" role="status"></p>
+          </section>
+
+          <section class="panel staff-resource-list-panel" aria-labelledby="staff-resource-list-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Access Control</p>
+                <h2 id="staff-resource-list-title">Current staff logins</h2>
+              </div>
+              <button id="refresh-staff-resource" class="button secondary" type="button">Refresh</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hours/week</th>
+                    <th>Grading</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Login</th>
+                  </tr>
+                </thead>
+                <tbody id="staff-resource-table"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -27,6 +27,8 @@ const PROTECTED_FILES = new Set([
   "/app/index.html",
   "/app/styles.css",
   "/index.html",
+  "/staff-resource.html",
+  "/staff-resource.js",
 ]);
 
 const MIME_TYPES = {
@@ -176,6 +178,8 @@ function publicUser(user) {
     email: user.email,
     role: user.role,
     rating: user.rating,
+    hoursPerWeek: user.hoursPerWeek,
+    blocked: Boolean(user.blocked),
     createdAt: user.createdAt,
   };
 }
@@ -208,6 +212,14 @@ function normaliseRating(rating) {
     return 1;
   }
   return Math.min(5, Math.max(1, Math.round(parsed)));
+}
+
+function normaliseHoursPerWeek(hoursPerWeek) {
+  const parsed = Number(hoursPerWeek);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return 0;
+  }
+  return Math.round(parsed * 4) / 4;
 }
 
 function createSession(email, user = {}) {
@@ -379,6 +391,7 @@ async function handleApi(request, response, pathname) {
     const password = String(body.password || "");
     const role = normaliseRole(body.role);
     const rating = normaliseRating(body.rating);
+    const hoursPerWeek = normaliseHoursPerWeek(body.hoursPerWeek);
 
     if (!name || !email || !email.includes("@")) {
       sendJson(response, 400, { message: "Enter a staff name and valid email." });
@@ -404,6 +417,8 @@ async function handleApi(request, response, pathname) {
       email,
       role,
       rating,
+      hoursPerWeek,
+      blocked: false,
       passwordHash: await hashPassword(password),
       createdAt: new Date().toISOString(),
     };
@@ -411,6 +426,40 @@ async function handleApi(request, response, pathname) {
     await writeAuthData(authData);
 
     sendJson(response, 201, { user: publicUser(user) });
+    return;
+  }
+
+  const blockUserMatch = pathname.match(/^\/api\/users\/([^/]+)\/block$/);
+  if (request.method === "POST" && blockUserMatch) {
+    const session = getSession(request);
+    if (!session) {
+      sendJson(response, 401, { message: "Authentication required." });
+      return;
+    }
+
+    if (!canManageUsers(session)) {
+      sendJson(response, 403, { message: "Only Admin and Management can block staff logins." });
+      return;
+    }
+
+    const body = await readJsonBody(request);
+    const authData = await readAuthData();
+    const user = authData.users.find((staffUser) => staffUser.id === blockUserMatch[1]);
+    if (!user) {
+      sendJson(response, 404, { message: "Staff login not found." });
+      return;
+    }
+
+    user.blocked = Boolean(body.blocked);
+    await writeAuthData(authData);
+
+    for (const [token, activeSession] of sessions.entries()) {
+      if (activeSession.email === user.email) {
+        sessions.delete(token);
+      }
+    }
+
+    sendJson(response, 200, { user: publicUser(user) });
     return;
   }
 
@@ -424,6 +473,13 @@ async function handleApi(request, response, pathname) {
       email === authData.adminEmail
         ? await verifyPassword(password, authData.passwordHash)
         : await verifyPassword(password, staffUser?.passwordHash);
+
+    if (staffUser?.blocked) {
+      sendJson(response, 403, {
+        message: "This login has been blocked. Please contact Management.",
+      });
+      return;
+    }
 
     if (!isValid) {
       sendJson(response, 401, {
