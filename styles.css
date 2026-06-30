@@ -529,6 +529,13 @@ tbody tr:hover td {
   min-width: 90px;
 }
 
+.calculated-cell {
+  color: var(--horizon-grey);
+  background: rgba(255, 230, 0, 0.16);
+  font-family: "GilroyBold", Arial, sans-serif;
+  white-space: nowrap;
+}
+
 .empty-cell,
 .empty-state {
   color: var(--horizon-grey-light);

@@ -83,7 +83,7 @@ async function loadStaff() {
 
 function renderStaff(users) {
   if (!users.length) {
-    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="8">No staff accounts yet.</td></tr>';
+    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="9">No staff accounts yet.</td></tr>';
     return;
   }
 
@@ -95,6 +95,7 @@ function renderStaff(users) {
         editableTextCell(user, "email", "email"),
         editableNumberCell(user, "hoursPerWeek"),
         editableNumberCell(user, "holidayDays", "0.5"),
+        calculatedHoursCell(user),
         editableSelectCell(user, "rating", [
           ["1", "1/5"],
           ["2", "2/5"],
@@ -133,6 +134,25 @@ function cell(value) {
   const td = document.createElement("td");
   td.textContent = value || "";
   return td;
+}
+
+function calculatedHoursCell(user) {
+  const td = document.createElement("td");
+  td.className = "calculated-cell";
+  td.textContent = formatAnnualHours(calculateAnnualHours(user));
+  return td;
+}
+
+function calculateAnnualHours(user) {
+  const workingDays = 261 - Number(user.holidayDays || 0);
+  const dailyHours = Number(user.hoursPerWeek || 0) / 5;
+  return workingDays * dailyHours;
+}
+
+function formatAnnualHours(value) {
+  return `${Number(value || 0).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  })}h`;
 }
 
 function editableTextCell(user, field, type = "text") {
