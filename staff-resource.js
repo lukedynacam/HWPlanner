@@ -83,7 +83,7 @@ async function loadStaff() {
 
 function renderStaff(users) {
   if (!users.length) {
-    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="7">No staff accounts yet.</td></tr>';
+    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="8">No staff accounts yet.</td></tr>';
     return;
   }
 
@@ -94,6 +94,7 @@ function renderStaff(users) {
         editableTextCell(user, "name"),
         editableTextCell(user, "email", "email"),
         editableNumberCell(user, "hoursPerWeek"),
+        editableNumberCell(user, "holidayDays", "0.5"),
         editableSelectCell(user, "rating", [
           ["1", "1/5"],
           ["2", "2/5"],
@@ -151,13 +152,13 @@ function editableTextCell(user, field, type = "text") {
   return td;
 }
 
-function editableNumberCell(user, field) {
+function editableNumberCell(user, field, step = "0.25") {
   const td = document.createElement("td");
   const input = document.createElement("input");
   input.className = "inline-edit inline-edit-number";
   input.type = "number";
   input.min = "0";
-  input.step = "0.25";
+  input.step = step;
   input.value = user[field] ?? 0;
   input.addEventListener("blur", () => saveInlineEdit(user, field, input.value));
   input.addEventListener("keydown", (event) => {
@@ -245,6 +246,7 @@ async function updateStaffResource(user, password = "") {
       name: user.name,
       email: user.email,
       hoursPerWeek: user.hoursPerWeek,
+      holidayDays: user.holidayDays,
       rating: user.rating,
       role: user.role,
       password,

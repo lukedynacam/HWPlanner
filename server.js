@@ -178,6 +178,7 @@ async function seedImportedStaff(data) {
         role: normaliseRole(staffMember.role),
         rating: normaliseRating(staffMember.rating),
         hoursPerWeek: normaliseHoursPerWeek(staffMember.hoursPerWeek),
+        holidayDays: normaliseHolidayDays(staffMember.holidayDays),
         blocked: Boolean(staffMember.blocked),
         imported: true,
         passwordHash: null,
@@ -241,6 +242,7 @@ function publicUser(user) {
     role: user.role,
     rating: user.rating,
     hoursPerWeek: user.hoursPerWeek,
+    holidayDays: user.holidayDays || 0,
     blocked: Boolean(user.blocked),
     hasPassword: Boolean(user.passwordHash),
     imported: Boolean(user.imported),
@@ -257,6 +259,7 @@ function publicAdminUser(data) {
     role: "Admin",
     rating: profile.rating || 5,
     hoursPerWeek: profile.hoursPerWeek || 0,
+    holidayDays: profile.holidayDays || 0,
     blocked: false,
     hasPassword: Boolean(data.passwordHash),
     imported: Boolean(profile.imported),
@@ -304,6 +307,14 @@ function normaliseHoursPerWeek(hoursPerWeek) {
     return 0;
   }
   return Math.round(parsed * 4) / 4;
+}
+
+function normaliseHolidayDays(holidayDays) {
+  const parsed = Number(holidayDays);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return 0;
+  }
+  return Math.round(parsed * 2) / 2;
 }
 
 function createSession(email, user = {}) {
@@ -476,6 +487,7 @@ async function handleApi(request, response, pathname) {
     const role = normaliseRole(body.role);
     const rating = normaliseRating(body.rating);
     const hoursPerWeek = normaliseHoursPerWeek(body.hoursPerWeek);
+    const holidayDays = normaliseHolidayDays(body.holidayDays);
 
     if (!name || !email || !email.includes("@")) {
       sendJson(response, 400, { message: "Enter a staff name and valid email." });
@@ -502,6 +514,7 @@ async function handleApi(request, response, pathname) {
       role,
       rating,
       hoursPerWeek,
+      holidayDays,
       blocked: false,
       passwordHash: await hashPassword(password),
       createdAt: new Date().toISOString(),
@@ -541,6 +554,7 @@ async function handleApi(request, response, pathname) {
         name: String(body.name || "").trim() || "Admin",
         rating: normaliseRating(body.rating),
         hoursPerWeek: normaliseHoursPerWeek(body.hoursPerWeek),
+        holidayDays: normaliseHolidayDays(body.holidayDays),
         imported: Boolean(authData.adminProfile?.imported),
         createdAt: authData.adminProfile?.createdAt || new Date().toISOString(),
       };
@@ -589,6 +603,7 @@ async function handleApi(request, response, pathname) {
     user.role = normaliseRole(body.role);
     user.rating = normaliseRating(body.rating);
     user.hoursPerWeek = normaliseHoursPerWeek(body.hoursPerWeek);
+    user.holidayDays = normaliseHolidayDays(body.holidayDays);
     if (password) {
       user.passwordHash = await hashPassword(password);
     }
