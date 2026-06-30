@@ -116,9 +116,18 @@ nav {
 }
 
 main {
-  width: min(1500px, 100%);
+  width: 100%;
   margin: 0 auto;
   padding: clamp(1rem, 3vw, 2rem);
+}
+
+#input-page {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+}
+
+#schedule-page {
+  width: 100%;
 }
 
 .page {
@@ -308,10 +317,33 @@ textarea {
   overflow-x: auto;
 }
 
+#schedule-page .table-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
 table {
   width: 100%;
   min-width: 1600px;
   border-collapse: collapse;
+}
+
+#schedule-table {
+  width: max-content;
+  min-width: 100%;
+}
+
+#schedule-table th,
+#schedule-table td {
+  white-space: nowrap;
+}
+
+#schedule-table th:nth-child(3),
+#schedule-table td:nth-child(3),
+#schedule-table th:nth-child(11),
+#schedule-table td:nth-child(11) {
+  min-width: 260px;
+  white-space: normal;
 }
 
 th,
