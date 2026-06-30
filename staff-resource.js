@@ -83,7 +83,7 @@ async function loadStaff() {
 
 function renderStaff(users) {
   if (!users.length) {
-    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="8">No staff accounts yet.</td></tr>';
+    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="7">No staff accounts yet.</td></tr>';
     return;
   }
 
@@ -91,13 +91,24 @@ function renderStaff(users) {
     ...users.map((user) => {
       const row = document.createElement("tr");
       row.append(
-        cell(user.name),
-        cell(user.email),
-        cell(formatHours(user.hoursPerWeek)),
-        cell(`${user.rating || 1}/5`),
-        cell(user.role),
+        editableTextCell(user, "name"),
+        editableTextCell(user, "email", "email"),
+        editableNumberCell(user, "hoursPerWeek"),
+        editableSelectCell(user, "rating", [
+          ["1", "1/5"],
+          ["2", "2/5"],
+          ["3", "3/5"],
+          ["4", "4/5"],
+          ["5", "5/5"],
+        ]),
+        editableSelectCell(user, "role", [
+          ["Admin", "Admin"],
+          ["Management", "Management"],
+          ["Lead", "Lead"],
+          ["Tech", "Tech"],
+          ["Inspection", "Inspection"],
+        ]),
         cell(statusLabel(user)),
-        detailsCell(user),
         actionCell(user),
       );
       return row;
@@ -123,6 +134,58 @@ function cell(value) {
   return td;
 }
 
+function editableTextCell(user, field, type = "text") {
+  const td = document.createElement("td");
+  const input = document.createElement("input");
+  input.className = "inline-edit";
+  input.type = type;
+  input.value = user[field] || "";
+  input.addEventListener("blur", () => saveInlineEdit(user, field, input.value));
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      input.blur();
+    }
+  });
+  td.append(input);
+  return td;
+}
+
+function editableNumberCell(user, field) {
+  const td = document.createElement("td");
+  const input = document.createElement("input");
+  input.className = "inline-edit inline-edit-number";
+  input.type = "number";
+  input.min = "0";
+  input.step = "0.25";
+  input.value = user[field] ?? 0;
+  input.addEventListener("blur", () => saveInlineEdit(user, field, input.value));
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      input.blur();
+    }
+  });
+  td.append(input);
+  return td;
+}
+
+function editableSelectCell(user, field, options) {
+  const td = document.createElement("td");
+  const select = document.createElement("select");
+  select.className = "inline-edit";
+  options.forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    select.append(option);
+  });
+  select.value = String(user[field] || options[0][0]);
+  select.addEventListener("change", () => saveInlineEdit(user, field, select.value));
+  td.append(select);
+  return td;
+}
+
 function actionCell(user) {
   const td = document.createElement("td");
   if (user.protected) {
@@ -137,22 +200,6 @@ function actionCell(user) {
   button.addEventListener("click", () => toggleBlock(user));
   td.append(button);
   return td;
-}
-
-function detailsCell(user) {
-  const td = document.createElement("td");
-  const button = document.createElement("button");
-  button.className = "primary-button";
-  button.type = "button";
-  button.textContent = "Edit Details";
-  button.addEventListener("click", () => editUser(user));
-  td.append(button);
-  return td;
-}
-
-function formatHours(value) {
-  const hours = Number(value || 0);
-  return `${hours.toLocaleString(undefined, { maximumFractionDigits: 2 })}h`;
 }
 
 async function toggleBlock(user) {
@@ -171,6 +218,40 @@ async function toggleBlock(user) {
   await loadStaff();
 }
 
+async function saveInlineEdit(user, field, value) {
+  const nextUser = {
+    ...user,
+    [field]: value,
+  };
+
+  if (String(user[field] ?? "") === String(value ?? "")) {
+    return;
+  }
+
+  try {
+    const payload = await updateStaffResource(nextUser);
+    setResourceMessage(`Updated ${payload.user.email}.`, "success");
+    await loadStaff();
+  } catch (error) {
+    setResourceMessage(error.message, "error");
+    await loadStaff();
+  }
+}
+
+async function updateStaffResource(user, password = "") {
+  return requestJson(`/api/users/${user.id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      name: user.name,
+      email: user.email,
+      hoursPerWeek: user.hoursPerWeek,
+      rating: user.rating,
+      role: user.role,
+      password,
+    }),
+  });
+}
+
 async function handleSubmit(event) {
   event.preventDefault();
   const editingId = elements.resourceId.value;
@@ -184,17 +265,26 @@ async function handleSubmit(event) {
   }
 
   try {
-    const payload = await requestJson(editingId ? `/api/users/${editingId}` : "/api/users", {
-      method: editingId ? "PUT" : "POST",
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        hoursPerWeek: formData.get("hoursPerWeek"),
-        rating: formData.get("rating"),
-        role: formData.get("role"),
-        password,
-      }),
-    });
+    const payload = editingId
+      ? await updateStaffResource({
+          id: editingId,
+          name: formData.get("name"),
+          email: formData.get("email"),
+          hoursPerWeek: formData.get("hoursPerWeek"),
+          rating: formData.get("rating"),
+          role: formData.get("role"),
+        }, password)
+      : await requestJson("/api/users", {
+          method: "POST",
+          body: JSON.stringify({
+            name: formData.get("name"),
+            email: formData.get("email"),
+            hoursPerWeek: formData.get("hoursPerWeek"),
+            rating: formData.get("rating"),
+            role: formData.get("role"),
+            password,
+          }),
+        });
     resetForm();
     setResourceMessage(
       editingId ? `Updated ${payload.user.email}.` : `Created login for ${payload.user.email}.`,
@@ -204,20 +294,6 @@ async function handleSubmit(event) {
   } catch (error) {
     setResourceMessage(error.message, "error");
   }
-}
-
-function editUser(user) {
-  elements.resourceId.value = user.id;
-  document.querySelector("#resource-name").value = user.name || "";
-  document.querySelector("#resource-email").value = user.email || "";
-  document.querySelector("#resource-hours").value = user.hoursPerWeek || 0;
-  document.querySelector("#resource-rating").value = String(user.rating || 1);
-  document.querySelector("#resource-role").value = user.role || "Tech";
-  document.querySelector("#resource-password").value = "";
-  elements.submit.textContent = "Update Staff";
-  elements.cancelEdit.hidden = false;
-  setResourceMessage("Editing staff details. Leave password blank to keep the existing login password.");
-  elements.form.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function resetForm() {

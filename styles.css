@@ -508,6 +508,27 @@ tbody tr:hover td {
   background: rgba(255, 230, 0, 0.12);
 }
 
+.inline-edit {
+  width: 100%;
+  min-width: 130px;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.45rem;
+  background: var(--horizon-off-white);
+  border: 1px solid transparent;
+  border-bottom-color: var(--horizon-grey-light);
+  font-size: 0.92rem;
+}
+
+.inline-edit:hover,
+.inline-edit:focus {
+  background: var(--horizon-white);
+  border-color: var(--horizon-yellow);
+}
+
+.inline-edit-number {
+  min-width: 90px;
+}
+
 .empty-cell,
 .empty-state {
   color: var(--horizon-grey-light);
