@@ -15,6 +15,7 @@ const elements = {
   cancelEdit: document.querySelector("#resource-cancel-edit"),
   message: document.querySelector("#staff-resource-message"),
   table: document.querySelector("#staff-resource-table"),
+  gradeHoursGrid: document.querySelector("#grade-hours-grid"),
   refresh: document.querySelector("#refresh-staff-resource"),
 };
 
@@ -79,11 +80,13 @@ async function loadStaff() {
   const payload = await requestJson("/api/users");
   staffUsers = payload.users || [];
   renderStaff(staffUsers);
+  renderGradeHours(staffUsers);
 }
 
 function renderStaff(users) {
   if (!users.length) {
-    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="8">No staff accounts yet.</td></tr>';
+    elements.table.innerHTML = '<tr><td class="empty-cell" colspan="9">No staff accounts yet.</td></tr>';
+    renderGradeHours([]);
     return;
   }
 
@@ -95,6 +98,7 @@ function renderStaff(users) {
         editableTextCell(user, "email", "email"),
         editableNumberCell(user, "hoursPerWeek"),
         editableNumberCell(user, "holidayDays", "0.5"),
+        calculatedHoursCell(user),
         editableSelectCell(user, "rating", [
           ["1", "1/5"],
           ["2", "2/5"],
@@ -117,6 +121,31 @@ function renderStaff(users) {
   );
 }
 
+function renderGradeHours(users) {
+  if (!elements.gradeHoursGrid) {
+    return;
+  }
+
+  const totals = [1, 2, 3, 4, 5].map((grade) => {
+    const usersInGrade = users.filter((user) => Number(user.rating || 1) === grade);
+    const totalHours = usersInGrade.reduce((sum, user) => sum + calculateAnnualHours(user), 0);
+    return { grade, totalHours, staffCount: usersInGrade.length };
+  });
+
+  elements.gradeHoursGrid.replaceChildren(
+    ...totals.map((total) => {
+      const card = document.createElement("article");
+      card.className = "grade-hours-card";
+      card.innerHTML = `
+        <span>Grade ${total.grade}</span>
+        <strong>${formatAnnualHours(total.totalHours)}</strong>
+        <small>${total.staffCount} staff</small>
+      `;
+      return card;
+    }),
+  );
+}
+
 function statusLabel(user) {
   if (user.protected) {
     return "Protected admin";
@@ -133,6 +162,25 @@ function cell(value) {
   const td = document.createElement("td");
   td.textContent = value || "";
   return td;
+}
+
+function calculatedHoursCell(user) {
+  const td = document.createElement("td");
+  td.className = "calculated-cell";
+  td.textContent = formatAnnualHours(calculateAnnualHours(user));
+  return td;
+}
+
+function calculateAnnualHours(user) {
+  const workingDays = 261 - Number(user.holidayDays || 0);
+  const dailyHours = Number(user.hoursPerWeek || 0) / 5;
+  return workingDays * dailyHours;
+}
+
+function formatAnnualHours(value) {
+  return `${Number(value || 0).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  })}h`;
 }
 
 function editableTextCell(user, field, type = "text") {
