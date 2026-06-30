@@ -1,6 +1,6 @@
 // Imported from upload_for_HW_a85e.csv.
 // These rows are merged into localStorage once so they behave like manual input rows.
-window.HWPLANNER_IMPORTED_SCHEDULE_VERSION = "upload_for_HW_a85e_2026-06-30";
+window.HWPLANNER_IMPORTED_SCHEDULE_VERSION = "upload_for_HW_a85e_2026-06-30_customer-cleanup";
 window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
   {
     "customer": "Sail GP",
@@ -163,7 +163,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0008"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -343,7 +343,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0017"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02985",
     "description": "LOOM - MGU GND STRAP MK2",
     "hours": "3.0",
@@ -663,7 +663,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0033"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03153",
     "description": "ASSY-BONDED-COIL PACK RH MK3",
     "hours": "10.0",
@@ -683,7 +683,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0034"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -1263,7 +1263,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0063"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -1563,7 +1563,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0078"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -3283,7 +3283,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0164"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03153",
     "description": "ASSY-BONDED-COIL PACK RH MK3",
     "hours": "10.0",
@@ -3303,7 +3303,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0165"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3323,7 +3323,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0166"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3703,7 +3703,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0185"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3723,7 +3723,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0186"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3743,7 +3743,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0187"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3763,7 +3763,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0188"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3783,7 +3783,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0189"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3803,7 +3803,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0190"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3843,7 +3843,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0192"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3863,7 +3863,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0193"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3883,7 +3883,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0194"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3903,7 +3903,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0195"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3923,7 +3923,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0196"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3943,7 +3943,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0197"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -3963,7 +3963,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0198"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -3983,7 +3983,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0199"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4003,7 +4003,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0200"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4023,7 +4023,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0201"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4043,7 +4043,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0202"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4063,7 +4063,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0203"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4083,7 +4083,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0204"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4103,7 +4103,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0205"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4123,7 +4123,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0206"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4143,7 +4143,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0207"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4263,7 +4263,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0213"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4283,7 +4283,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0214"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4303,7 +4303,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0215"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4443,7 +4443,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0222"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4463,7 +4463,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0223"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4483,7 +4483,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0224"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4503,7 +4503,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0225"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4523,7 +4523,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0226"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4543,7 +4543,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0227"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4563,7 +4563,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0228"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4583,7 +4583,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0229"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4603,7 +4603,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0230"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4623,7 +4623,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0231"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4643,7 +4643,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0232"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4663,7 +4663,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0233"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4683,7 +4683,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0234"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4703,7 +4703,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0235"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4723,7 +4723,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0236"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4743,7 +4743,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0237"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4763,7 +4763,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0238"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -4783,7 +4783,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0239"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4803,7 +4803,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0240"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4823,7 +4823,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0241"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4843,7 +4843,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0242"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -4863,7 +4863,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0243"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4883,7 +4883,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0244"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4903,7 +4903,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0245"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4923,7 +4923,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0246"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4943,7 +4943,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0247"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -4963,7 +4963,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0248"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -4983,7 +4983,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0249"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -5003,7 +5003,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0250"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -5103,7 +5103,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0255"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5123,7 +5123,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0256"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5143,7 +5143,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0257"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5163,7 +5163,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0258"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5183,7 +5183,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0259"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5203,7 +5203,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0260"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -5223,7 +5223,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0261"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -5243,7 +5243,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0262"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -5263,7 +5263,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0263"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -5283,7 +5283,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0264"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -5303,7 +5303,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0265"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -5323,7 +5323,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0266"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5343,7 +5343,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0267"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5363,7 +5363,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0268"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5383,7 +5383,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0269"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5403,7 +5403,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0270"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5423,7 +5423,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0271"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -5443,7 +5443,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0272"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -5543,7 +5543,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0277"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5563,7 +5563,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0278"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5583,7 +5583,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0279"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5603,7 +5603,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0280"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02765",
     "description": "LOOM - MGUK LV MK3",
     "hours": "8.0",
@@ -5623,7 +5623,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0281"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5643,7 +5643,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0282"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5663,7 +5663,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0283"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5683,7 +5683,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0284"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5703,7 +5703,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0285"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5723,7 +5723,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0286"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5743,7 +5743,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0287"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5763,7 +5763,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0288"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5783,7 +5783,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0289"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5803,7 +5803,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0290"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -5823,7 +5823,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0291"
   },
   {
-    "customer": "Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02245",
     "description": "LOOM PHP LPS MK3",
     "hours": "30.0",
@@ -6003,7 +6003,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0300"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -6023,7 +6023,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0301"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -6043,7 +6043,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0302"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -6063,7 +6063,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0303"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -6083,7 +6083,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0304"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03153",
     "description": "ASSY-BONDED-COIL PACK RH MK3",
     "hours": "10.0",
@@ -6143,7 +6143,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0307"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03155",
     "description": "ASSY-BONDED-COIL PACK LH MK3",
     "hours": "10.0",
@@ -6163,7 +6163,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0308"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-03153",
     "description": "ASSY-BONDED-COIL PACK RH MK3",
     "hours": "10.0",
@@ -6183,7 +6183,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0309"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-ES-02541",
     "description": "ASSY - PHP FAN - NEG-PRCHG SCB",
     "hours": "20.0",
@@ -6203,7 +6203,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0310"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -6223,7 +6223,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0311"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -6243,7 +6243,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0312"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -6263,7 +6263,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0313"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -6283,7 +6283,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0314"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -6303,7 +6303,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0315"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00517",
     "description": "ASSY - CVS",
     "hours": "5.0",
@@ -6323,7 +6323,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0316"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT02-ES-00515",
     "description": "ASSY - ES CVS",
     "hours": "2.0",
@@ -6343,7 +6343,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0317"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-ES-02541",
     "description": "ASSY - PHP FAN - NEG-PRCHG SCB",
     "hours": "240.0",
@@ -6403,7 +6403,7 @@ window.HWPLANNER_IMPORTED_SCHEDULE_ROWS = [
     "id": "imported-hw-0320"
   },
   {
-    "customer": "Red Bull Powertrains Red Bull Power Trains Red Bull Power Trains Red Bull Power Trains",
+    "customer": "Red Bull Powertrains",
     "partNumber": "RBPT01-EL-02985",
     "description": "LOOM - MGU GND STRAP MK2",
     "hours": "3.0",

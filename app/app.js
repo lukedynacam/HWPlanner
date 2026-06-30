@@ -54,7 +54,12 @@
     }
 
     try {
-      return JSON.parse(storedRows);
+      var rows = JSON.parse(storedRows);
+      var normalisedRows = rows.map(normaliseScheduleRow);
+      if (JSON.stringify(rows) !== JSON.stringify(normalisedRows)) {
+        saveRows(normalisedRows);
+      }
+      return normalisedRows;
     } catch (error) {
       console.error("Unable to load saved schedule rows.", error);
       return [];
@@ -63,6 +68,21 @@
 
   function saveRows(rows) {
     window.localStorage.setItem(storageKey, JSON.stringify(rows));
+  }
+
+  function normaliseScheduleRow(row) {
+    return Object.assign({}, row, {
+      customer: normaliseCustomerName(row.customer)
+    });
+  }
+
+  function normaliseCustomerName(customer) {
+    var value = String(customer || "").trim();
+    if (/red bull power\\s*trains/i.test(value)) {
+      return "Red Bull Powertrains";
+    }
+
+    return value;
   }
 
   function seedImportedRows() {
